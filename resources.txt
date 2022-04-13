@@ -1,0 +1,9 @@
+Resources Used:
+https://dev.twitch.tv/docs/irc
+https://dev.twitch.tv/docs/irc/guide
+https://dev.twitch.tv/docs/irc/commands
+https://dev.twitch.tv/docs/irc/tags
+https://stackoverflow.com/questions/22856279/call-external-javascript-functions-from-java-code
+https://docs.oracle.com/javase/8/docs/technotes/guides/scripting/prog_guide/api.html
+https://zetcode.com/javaswing/draganddrop/
+https://docs.oracle.com/javase/tutorial/deployment/applet/invokingJavaScriptFromApplet.html
