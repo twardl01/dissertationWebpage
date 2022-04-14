@@ -1,47 +1,54 @@
-class TicTacToe {
+class TicTacToeEngine {
     //init
     //sets board to be an int array of length 9, and movesLeft to be 
     constructor() {
         this.board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
+        this.active = true;
+        this.player = 1;
+    }
+
+    //setters
+    changePlayer() {
+        if (this.player == 1) {
+            this.player = 2;
+        } else {
+            this.player = 1;
+        }
+    }
+
+    setBoard(board) {
+        this.board = board;
+    }
+
+    makeActive() {
+        this.active = true;
+    }
+
+    makeInactive(){
         this.active = false;
     }
 
-    //returns the board, used for visuals
+    //getters
+    returnMovesDone() {
+        return 9-(this.movesLeft);
+    }
+
     returnBoard(){
         return this.board;
     }
 
-    //places a nought at position
-    //returns 1 if move causes noughts to win, 0 if not a win state, -1 if board is full and neither team has won.
-    noughtMove(position) {
-        this.board[position] = 1;
-        this.movesLeft--;
-        if (this.winState() != 0 || this.movesLeft == 0) {
-            return 1;
-        }
-
-        if (this.movesLeft == 0) {
-            return -1;
-        }
-
-        return 0;
+    returnPlayer() {
+        return this.player;
     }
 
-    //places a cross at position
-    //returns 1 if move causes crosses to win, 0 if not a win state, -1 if board is full and neither team has won.
-    crossMove(position) {
-        this.board[position] = 2;
+    isActive() {
+        return this.active;
+    }
+    //places piece at position on the board.
+    makeMove(piece,position) {
+        this.board[position] = piece;
         this.movesLeft--;
-        if (this.winState() != 0) {
-            return 1;
-        }
-
-        if (this.movesLeft == 0) {
-            return -1;
-        }
-
-        return 0;
     }
 
     //returns if position doesn't have a nought or cross placed on it
@@ -52,17 +59,23 @@ class TicTacToe {
     //returns if either team has won
     //1 if noughts win, 2 if crosses win, 0 if neither win.
     winState() {
-        for (let move in [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]) {
-            if (this.board[move[0]] == this.board[move[1]] && this.board[move[1]] == this.board[move[2]]) {
-                return this.board[move[0]];
+        let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+        for (let i = 0; i <= 7; i++) {
+            if (this.board[moves[i][0]] === this.board[moves[i][1]] && this.board[moves[i][1]] === this.board[moves[i][2]]) {
+                if (this.board[moves[i][0]] != 0) {
+                    return 1;
+                }
             }
+        }
+        if (this.movesLeft == 0) {
+            return -1;
         }
         return 0;
     }
 
     //resets the board to being empty
     resetBoard() {
-        this.board = new int[9];
+        this.board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
     }
 }

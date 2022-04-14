@@ -8,3 +8,4 @@ https://docs.oracle.com/javase/8/docs/technotes/guides/scripting/prog_guide/api.
 https://zetcode.com/javaswing/draganddrop/
 https://docs.oracle.com/javase/tutorial/deployment/applet/invokingJavaScriptFromApplet.html
 https://www.codeleaks.io/tic-tac-toe-game-using-html-css-and-javascript/
+https://codesphere.com/articles/how-to-create-a-twitch-chat-game-with-javascript

@@ -1,10 +1,11 @@
-class chatbot {
+//ensures twitch API installed
+const tmi = require(['../lib/tmi.js']);
+
+class ChatbotPlayer {
     
     constructor() {
-        //ensures twitch API installed
-        const tmi = require('tmi.js');
-
-        this.moveVotes = [0,0,0,0,0,0,0,0];
+        
+        this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.active = false;
 
         //twitch client used for fetching data/speaking to the chat
@@ -25,74 +26,74 @@ class chatbot {
         });
 
         //adds handlers to handle messages/connection to twitch
-        this.client.on('message', this.onMessageHandler); 
-        this.client.on('connected', this.onConnectedHandler);
-
-        this.connectClient();
-    }
-
-    onMessageHandler(channel,_tags,message,self) {
-        if (self) { return; }
+        //anonymous function handling the messages
+        this.client.on('message', (channel,_tags,message,self) => {
+            if (self) { return; }
+        
+            //all commands start with !, used to reduce time spent on non-commands
+            if (!message.trim().startsWith('!')) {
+                return;
+            }
     
-        //all commands start with !, used to reduce time spent on non-commands
-        if (!message.trim().startsWith('!')) {
-            return;
-        }
-
-        //logs message received (command)
-        console.log(message);
-
-        //splits message into multiple strings, which are seperated by spaces.
-        const commandParameters = message.split(' ');
-
-        //command name is the first
-        //trim() used to remove all whitespace not removed by message.split
-        const commandName = commandParameters[0].trim();
-        const commandNum = commandParameters[1].trim();
-
-        //commands:
-        // !vote - votes for move.
-        // !votes - returns votes for a piece.
-        // !toggle - toggles chat interaction.
-        // !clearVotes - clears votes, resets votes to 0.
-        switch (commandName) {
-            case "!vote":
-                if (this.active) {
-                    console.log('Vote found for Move ' + commandNum);
-            
-                    //adds vote if in domain & is integer.
-                    if (Number.isInteger(Number(commandNum)) && Number(commandNum) > 0 && Number(commandNum) < 9) {
-                        this.moveVotes[commandNum]++;
-                        console.log('Move ' + commandNum + ' was voted for, move now has ' + moveVotes[commandNum] + ' votes.');
+            //logs message received (command)
+            console.log(message);
+    
+            //splits message into multiple strings, which are seperated by spaces.
+            const commandTrim = message.trim();
+            const commandParameters = commandTrim.split(' ');
+    
+            //command name is the first
+            //trim() used to remove all whitespace not removed by message.split
+            const commandName = commandParameters[0];
+            const commandNum = commandParameters[1];
+    
+            //commands:
+            // !vote - votes for move.
+            // !votes - returns votes for a piece.
+            // !toggle - toggles chat interaction.
+            // !clearVotes - clears votes, resets votes to 0.
+            switch (commandName) {
+                case "!vote":
+                    if (this.active) {
+                        console.log('Vote found for Move ' + commandNum);
+                
+                        //adds vote if in domain & is integer.
+                        if (this.validMove(Number(commandNum))) {
+                            this.moveVotes[commandNum]++;
+                            console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
+                        } else {
+                            console.log('Vote out of Index, not counted.');
+                        }
+                    }
+                    return;
+                case "!votes":
+                    if (this.validMove(Number(commandNum))) {
+                        this.client.say(channel, "Votes for " + commandNum + ": " + this.moveVotes[commandNum]);
+                        console.log( 'Votes returned for piece' + commandNum);
                     } else {
                         console.log('Vote out of Index, not counted.');
                     }
-                }
-                return;
-            case "!votes":
-                if (Number.isInteger(Number(commandNum)) && Number(commandNum) > 0 && Number(commandNum) < 9) {
-                    this.client.say(channel, "Votes for " + commandNum + ": " + moveVotes[commandNum]);
-                    console.log( 'Votes returned for piece' + commandNum);
-                } else {
-                    console.log('Vote out of Index, not counted.');
-                }
-                return;
-            case "!toggle":
-                toggleVoting();
-                console.log('Voting = ' + active)
-                return;
-            case "!clearvotes":
-                resetVotes();
-                console.log('Votes Reset!')
-                return;
-            default:
-                console.log('No command with name ' + commandName);
-        }
-    }
+                    return;
+                case "!toggle":
+                    this.toggleVoting();
+                    console.log('Voting = ' + this.active)
+                    return;
+                case "!clearvotes":
+                    this.resetVotes();
+                    console.log('Votes Reset!')
+                    return;
+                default:
+                    console.log('No command with name ' + commandName);
+            }
 
-    //prints line on connection, useful for debug
-    onConnectedHandler(addr,port) {
-        console.log(`* Connected to ${addr}:${port}`);
+        });        
+        
+        //prints line on connection, useful for debug
+        this.client.on('connected', (addr,port) => {
+            console.log(`* Connected to ${addr}:${port}`);
+        });
+
+        this.connectClient();
     }
 
     //connects client to twitch
@@ -111,21 +112,23 @@ class chatbot {
         this.client.connect()
     }
 
-    //adds vote to array
-    addVote(voteNum) {
-        this.moveVotes[voteNum]++;
+    //gets votes for a move
+    getVotes() {
+        return this.moveVotes;
     }
 
-    //gets votes for a 
-    getVotes(voteNum) {
-        return this.moveVotes[voteNum];
-    }
-
-    resetVotes(voteNum) {
-        this.moveVotes = new int[voteNum];
-        for (let i = 0; i < moveVotes.length; i++) {
-            this.moveVotes[i] = 0;
+    votedMove() {
+        let highestNum = 0;
+        for (let i = 0; i < 9; i++) {
+            if (this.moveVotes[i] > highestNum) {
+                highestNum = this.moveVotes[i]
+            }
         }
+        return highestNum;
+    }
+
+    resetVotes() {
+        this.moveVotes = [0,0,0,0,0,0,0,0,0];
     }
 
     toggleVoting() {
@@ -138,13 +141,14 @@ class chatbot {
 
     validMove(voteNum) {
         //checks type & contents
-        if (voteNum == undefined || !isInteger(voteNum)) {
+        if (voteNum == undefined || !Number.isInteger(voteNum)) {
+            console.log()
             return false;
         }
 
         //checks if value provided is out of the domain
-        return !(voteNum < 0 && voteNum > 9);
+        return voteNum >= 0 && voteNum < 9;
     }
 }
 
-let bot = new chatbot();
+let bot = new ChatbotPlayer();
