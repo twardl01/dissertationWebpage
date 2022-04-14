@@ -1,6 +1,5 @@
 class chatbot {
     
-    
     constructor() {
         //ensures twitch API installed
         const tmi = require('tmi.js');
