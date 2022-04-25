@@ -46,18 +46,22 @@ class TicTacToeEngine {
         return this.active;
     }
     //places piece at position on the board.
-    makeMove(piece,position) {
+    makeMove(piece, position) {
         this.board[position] = piece;
         this.movesLeft--;
     }
 
     //returns if position doesn't have a nought or cross placed on it
     isEmpty(position){
+        if (position < 0 || position >= 9){
+            console.log("Cell position - OUT OF BOUNDS >> " + position);
+        }
+
         return (this.board[position] != 1 && this.board[position] != 2);
     }
 
-    //returns if win state has been achieved.
-    //1 if win, 0 if not won.
+    //returns if either team has won
+    //1 if noughts win, 2 if crosses win, 0 if neither win.
     winState() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for (let i = 0; i <= 7; i++) {
@@ -73,10 +77,9 @@ class TicTacToeEngine {
         return 0;
     }
 
-    //resets the board to the initial state
+    //resets the board to being empty
     resetBoard() {
         this.board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
-        this.player = 1;
     }
 }

@@ -1,24 +1,25 @@
 //ensures twitch API installed
-const tmi = require(['../lib/tmi.js']);
-
 class ChatbotPlayer {
     
-    constructor() {
+    constructor(id, engine) {
         
+        this.id = id;
+        this.engine = engine;
+
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.active = false;
 
         //twitch client used for fetching data/speaking to the chat
         this.client = new tmi.client({
-            //ensures secure connection required, also reconnects on unintentional disconnection
+            //ensures
             connection: {
                 secure: true,
                 reconnect: true
             },
             //bot channel, bot auth token (used to validate session)
             identity:{
-                username: 'cropsey',
-                password: 'oauth:ihk1g213a9yhxl9eehfcxt187i5ack'
+                username: 'programtest2',
+                password: 'oauth:vtensnspxk74a49vlbjymrr76gsj7n'
             },
 
             //channel(s) for bot to connect to
@@ -74,12 +75,10 @@ class ChatbotPlayer {
                         console.log('Vote out of Index, not counted.');
                     }
                     return;
-                //dev command, toggles input
                 case "!toggle":
                     this.toggleVoting();
                     console.log('Voting = ' + this.active)
                     return;
-                //dev command, resets all vote counters to 0
                 case "!clearvotes":
                     this.resetVotes();
                     console.log('Votes Reset!')
@@ -119,7 +118,6 @@ class ChatbotPlayer {
         return this.moveVotes;
     }
 
-    //fetches the most voted move
     votedMove() {
         let highestNum = 0;
         for (let i = 0; i < 9; i++) {
@@ -130,22 +128,18 @@ class ChatbotPlayer {
         return highestNum;
     }
 
-    //resets the votes
     resetVotes() {
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
     }
 
-    //toggles the ability to vote for a command
     toggleVoting() {
         this.active = !this.active
     }
 
-    //returns if the bot is active
     votingFunctional() {
         return this.active
     }
 
-    //returns if the move is valid
     validMove(voteNum) {
         //checks type & contents
         if (voteNum == undefined || !Number.isInteger(voteNum)) {
@@ -157,5 +151,3 @@ class ChatbotPlayer {
         return voteNum >= 0 && voteNum < 9;
     }
 }
-
-let bot = new ChatbotPlayer();

@@ -2,15 +2,8 @@
 
 <html lang="en">
         <head>
-            <!--Twitch API used for Twitch Chatbot-->
-            <!--<script src="lib/tmi.js" type="module"></script>-->
-
-            <!--adds require keyword required for chatbot-->
-            <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
-            
-            <script src="js/TicTacToeEngine.js" type="text/javascript"></script> 
-            <!--<script src="js/chatbotPlayer.js" type="text/javascript"></script>-->
-
+            <!--imports all files in js using require.js-->
+            <script data-main="js/main" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
             
             <link rel="stylesheet" href="css/site.css">
             <meta charset="UTF-8">
@@ -52,6 +45,11 @@
             let tttGame = new TicTacToeEngine();
             //let chatbot = new chatbotPlayer();
 
+            //user login variables
+            var channel;
+            var authToken;
+            var botname;
+            
             //set values
             let userTurn = true;
             let gameActive = true;
