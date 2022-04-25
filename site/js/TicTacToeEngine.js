@@ -56,8 +56,8 @@ class TicTacToeEngine {
         return (this.board[position] != 1 && this.board[position] != 2);
     }
 
-    //returns if either team has won
-    //1 if noughts win, 2 if crosses win, 0 if neither win.
+    //returns if win state has been achieved.
+    //1 if win, 0 if not won.
     winState() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for (let i = 0; i <= 7; i++) {
@@ -73,7 +73,7 @@ class TicTacToeEngine {
         return 0;
     }
 
-    //resets the board to being empty
+    //resets the board to the initial state
     resetBoard() {
         this.board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;

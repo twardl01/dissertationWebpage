@@ -14,7 +14,7 @@
             
             <link rel="stylesheet" href="css/site.css">
             <meta charset="UTF-8">
-        <title>Test</title> 
+        <title>Tic Tac Toe</title> 
     </head>
     <body>
         <section>
@@ -36,9 +36,9 @@
                 <div class="column">
                     <textarea class="txtChat"></textarea>
                     <div class="btnContainer">
-                        <button class="btnRestart">Restart Game</button>
                         <button class="btnStart">Start Game</button>
                         <button class="btnStop">Stop Game</button>
+                        <button class="btnRestart">Restart Game</button>
                         <button class="btnCredentials">Enter Credentials</button>
                     </div>
                 </div>
@@ -109,6 +109,28 @@
                 handleResultValidation();
             }
 
+            function handleStartGame() {
+                tttGame.makeActive();
+                
+                if (tttGame.winState() != 0) {
+                    currentPlayer = tttGame.returnPlayer();
+                    tttGame.resetBoard();
+                    statusDisplay.innerHTML = currentPlayerTurn();
+                    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+                }
+
+                document.querySelector('.btnStart').disabled = true;
+                document.querySelector('.btnStop').disabled = false;
+            }
+
+            function handleStopGame() {
+                tttGame.makeInactive();
+                
+                document.querySelector('.btnStart').disabled = false;
+                document.querySelector('.btnStop').disabled = true;
+            }
+
+            
             function handleRestartGame() {
                 tttGame.makeActive()
                 currentPlayer;
@@ -117,30 +139,14 @@
                 document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
             }
 
-            function handleStartGame() {
-                
-                tttGame.makeActive();
-                if (tttGame.winState() != 0) {
-                    currentPlayer = "X";
-                    tttGame.resetBoard();
-                    statusDisplay.innerHTML = currentPlayerTurn();
-                    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
-                }
-            }
-
-            function handleStopGame() {
-                tttGame.makeInactive();
-            }
-
             function handleCredentials() {
-
+                
             }
-
 
             document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
-            document.querySelector('.btnRestart').addEventListener('click', handleRestartGame);
             document.querySelector('.btnStart').addEventListener('click', handleStartGame);
             document.querySelector('.btnStop').addEventListener('click', handleStopGame);
+            document.querySelector('.btnRestart').addEventListener('click', handleRestartGame);
             document.querySelector('.btnCredentials').addEventListener('click',handleCredentials);
         </script>
     </body>
