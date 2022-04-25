@@ -77,5 +77,6 @@ class TicTacToeEngine {
     resetBoard() {
         this.board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
+        this.player = 1;
     }
 }

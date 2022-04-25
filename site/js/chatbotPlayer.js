@@ -10,7 +10,7 @@ class ChatbotPlayer {
 
         //twitch client used for fetching data/speaking to the chat
         this.client = new tmi.client({
-            //ensures
+            //ensures secure connection required, also reconnects on unintentional disconnection
             connection: {
                 secure: true,
                 reconnect: true
@@ -74,10 +74,12 @@ class ChatbotPlayer {
                         console.log('Vote out of Index, not counted.');
                     }
                     return;
+                //dev command, toggles input
                 case "!toggle":
                     this.toggleVoting();
                     console.log('Voting = ' + this.active)
                     return;
+                //dev command, resets all vote counters to 0
                 case "!clearvotes":
                     this.resetVotes();
                     console.log('Votes Reset!')
@@ -117,6 +119,7 @@ class ChatbotPlayer {
         return this.moveVotes;
     }
 
+    //fetches the most voted move
     votedMove() {
         let highestNum = 0;
         for (let i = 0; i < 9; i++) {
@@ -127,18 +130,22 @@ class ChatbotPlayer {
         return highestNum;
     }
 
+    //resets the votes
     resetVotes() {
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
     }
 
+    //toggles the ability to vote for a command
     toggleVoting() {
         this.active = !this.active
     }
 
+    //returns if the bot is active
     votingFunctional() {
         return this.active
     }
 
+    //returns if the move is valid
     validMove(voteNum) {
         //checks type & contents
         if (voteNum == undefined || !Number.isInteger(voteNum)) {
