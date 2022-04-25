@@ -54,6 +54,7 @@
             let userTurn = true;
             let gameActive = true;
             let currentPlayer = tttGame.returnPlayer();
+            let timeframe = 30000;
 
             const winningMessage = () => `Player ${currentPlayer} has won!`;
             const drawMessage = () => `Game ended in a draw!`;
@@ -109,9 +110,15 @@
                 handleResultValidation();
             }
 
+            function handleChatPlay() {
+                //chatbot.toggleVoting()
+                //setTimeout(chatbot.getSelectedMove(),timeframe)
+                tttGame.makeMove(currentPlayer,selectedNum)
+            }
+
             function handleStartGame() {
                 tttGame.makeActive();
-                
+
                 if (tttGame.winState() != 0) {
                     currentPlayer = tttGame.returnPlayer();
                     tttGame.resetBoard();
