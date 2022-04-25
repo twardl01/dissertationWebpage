@@ -3,13 +3,13 @@
 <html lang="en">
         <head>
             <!--Twitch API used for Twitch Chatbot-->
-            <script src="lib/tmi.js" type="module"></script>
+            <!--<script src="lib/tmi.js" type="module"></script>-->
 
             <!--adds require keyword required for chatbot-->
             <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
             
             <script src="js/TicTacToeEngine.js" type="text/javascript"></script> 
-            <script src="js/chatbotPlayer.js" type="text/javascript"></script> 
+            <!--<script src="js/chatbotPlayer.js" type="text/javascript"></script>-->
 
             
             <link rel="stylesheet" href="css/site.css">
@@ -49,7 +49,7 @@
             const statusDisplay = document.querySelector('.txtStatus');
 
             let tttGame = new TicTacToeEngine();
-            let chatbot = new chatbotPlayer();
+            //let chatbot = new chatbotPlayer();
 
             let userTurn = true;
             let gameActive = true;
