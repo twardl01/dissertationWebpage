@@ -12,6 +12,7 @@ class TicTacToeModel {
         this.#player = 1;
     }
 
+    //changes player, triggers event for other components
     changePlayer() {
         if (this.#player == 1) {
             this.#player = 2
@@ -48,11 +49,26 @@ class TicTacToeModel {
         return this.#active;
     }
 
+    //starts the game on the board, triggers events for elsewhere
     startGame() {
-        this.resetBoard();
+        if (this.winState != 0) {
+            this.restartGame();   
+        }
+
         this.#active = true;
+    }
+
+    //resets values
+    restartGame() {
+        this.resetBoard();
+        this.#active = false;
         $(this).trigger('game-change',this.#player);
         $(this).trigger('player-change',this.#player);
+    }
+
+    //stops any input from being performed
+    stopGame() {
+        this.#active = false;
     }
 
     //places piece at position on the board.
@@ -70,6 +86,7 @@ class TicTacToeModel {
 
         let currentState = this.winState();
 
+        //triggers game-state event for any win state achieved
         if (currentState == 0) {
             this.changePlayer();
         } else {

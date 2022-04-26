@@ -1,9 +1,12 @@
 class Player {
+
+    //saves id/bool representing if they can move
     constructor(id) {
         this.id = id;
         this.myTurn = false;
     }
 
+    //used for sequencing; makes sure that only the person who's moving can move
     playerChanged(id) {
         if (id == this.id) {
             this.myTurn = true;
@@ -12,6 +15,7 @@ class Player {
         }
     }
 
+    //disables the player
     disable() {
         this.myTurn = false;
     }
@@ -19,36 +23,43 @@ class Player {
 
 class HumanPlayer extends Player {
     constructor(id, engine) {
+        //
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
         super(id);
 
         this.engine = engine;
     }
 
+    //
     handleCellClick(clickedCellEvent) {
         const clickedCell = clickedCellEvent.target;
         const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
 
         console.log("Processing cell click: " + clickedCellIndex);
 
+        
+        if (!this.engine.active) {
+            //log that engine is inactive; leave function
+            console.log("Engine is inactive, ignoring click")
+            return;
+        }
+        
         if (!this.engine.isEmpty(clickedCellIndex)) {
+            //log that cell is full; leave function
             console.log("Cell already used")
             return;
         }
 
-        if (!this.engine.active) {
-            console.log("Engine is inactive, ignoring click")
-            return;
-        }
-
         if (!this.myTurn) {
+            //log that it isn't players turn; leave function
             console.log("Not my turn, ignoring click")
             return;
         }
 
-
+        //if nothing's wrong, make the move.
         this.engine.makeMove(this.id, clickedCellIndex);
 
+        //log that a move has been made
         console.log("Processed cell click: " + clickedCellIndex);
     }
 }
@@ -118,7 +129,7 @@ class ChatbotPlayer extends Player {
                 
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
-                            if (mode == 0) {
+                            if (this.mode == 0) {
                                 engine.makeMove(id, commandNum);
                             } else {
                                 this.moveVotes[commandNum]++;

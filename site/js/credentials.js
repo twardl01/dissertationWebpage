@@ -1,6 +1,7 @@
 class Credentials {
-    constructor() { /* TODO document why this constructor is empty */ }
+    constructor() { /*no need for constructor*/ }
     
+    //getters
     get username() {
         return sessionStorage.getItem("botUsername");
     }
@@ -13,6 +14,7 @@ class Credentials {
         return sessionStorage.getItem("botChannels");
     }
 
+    //setters
     set username(username) {
         sessionStorage.setItem("botUsername",username);
     }
@@ -25,6 +27,7 @@ class Credentials {
         sessionStorage.setItem("botChannels",channels);
     }
 
+    //clears session storage
     clear() {
         sessionStorage.removeItem("botUsername")
         sessionStorage.removeItem("botOAuth")

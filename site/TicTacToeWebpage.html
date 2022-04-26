@@ -5,15 +5,25 @@
             <!--imports all files in js using require.js-->
             <script data-main="js/main" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
             
+            <!--imports css styling used in document-->
+            <link rel="stylesheet" href="css/bootstrap.min.css">
             <link rel="stylesheet" href="css/site.css">
+
+            <!--makes sure characterset used is unicode-->
             <meta charset="UTF-8">
         <title>Tic Tac Toe</title> 
     </head>
     <body>
         <section>
             <div class="container">
+                <!--columns used to seperate content into two sides-->
+                <!--first column, used for status & board-->
                 <div class="column">
+                    <!--txtStatus displays current game status-->
                     <h2 class="txtStatus"></h2>
+
+                    <!--board container, cells used for interaction-->
+                    <!--cell index used for identification-->
                     <div class="cellContainer">
                         <div data-cell-index="0" class="cell"></div>
                         <div data-cell-index="1" class="cell"></div>
@@ -26,9 +36,12 @@
                         <div data-cell-index="8" class="cell"></div>
                     </div>
                 </div>
+                <!--second column, used for left side of screen-->
                 <div class="column">
+                    <!--txtChat displays chat input-->
                     <textarea class="txtChat" disabled="true"></textarea>
                     <div class="btnContainer">
+                        <!--buttons used for board manipulation + credential entry-->
                         <button class="btnStart">Start Game</button>
                         <button class="btnStop">Stop Game</button>
                         <button class="btnRestart">Restart Game</button>
