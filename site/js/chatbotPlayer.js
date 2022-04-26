@@ -1,8 +1,7 @@
-//ensures twitch API installed
 class ChatbotPlayer {
     
     constructor(id, engine) {
-        
+
         this.id = id;
         this.engine = engine;
 

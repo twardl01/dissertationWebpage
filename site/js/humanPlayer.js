@@ -30,9 +30,8 @@ class HumanPlayer {
 
   
         this.handleCellPlayed(clickedCell, clickedCellIndex);
-        this.handleResultValidation();
  
-         console.log("Processed cell click: " + clickedCellIndex);
+        console.log("Processed cell click: " + clickedCellIndex);
     }
 
    handleCellPlayed(clickedCell, clickedCellIndex) {

@@ -8,15 +8,16 @@ class TicTacToeEngine {
         this.player = 1;
     }
 
-    //setters
     changePlayer() {
         if (this.player == 1) {
-            this.player = 2;
+            this.player = 2
         } else {
-            this.player = 1;
+            this.player = 1
         }
+        //TODO sequencing
     }
 
+    //setters
     setBoard(board) {
         this.board = board;
     }
@@ -45,10 +46,25 @@ class TicTacToeEngine {
     isActive() {
         return this.active;
     }
+
     //places piece at position on the board.
     makeMove(piece, position) {
         this.board[position] = piece;
         this.movesLeft--;
+        let currentState = this.winState();
+
+        if (currentState == 0) {
+            this.changePlayer();
+            return;
+        }
+
+        if (currentState == 1) {
+            //TODO win state
+        }
+
+        if (currentState == -1) {
+            //TODO draw state
+        }
     }
 
     //returns if position doesn't have a nought or cross placed on it
