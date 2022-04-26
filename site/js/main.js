@@ -7,11 +7,17 @@ requirejs.config({
     baseUrl: 'lib',
     paths: {
         app: '../js',
-        jquery: 'jquery-3.6.0'
+        jquery: 'jquery-3.6.0',
+        "jquery.bootstrap": 'bootstrap.min'
+    },
+    shim: {
+        "jquery.bootstrap": {
+            deps:["jquery"]
+        }
     }
 });
 
-requirejs(["app/TicTacToeGame", "app/TicTacToeModel","app/TicTacToeView", "app/Players", "lib/tmi.js", "jquery"], function() {
+requirejs(["app/TicTacToeGame", "app/TicTacToeModel","app/TicTacToeView", "app/Players", "app/Credentials", "lib/tmi.js", "jquery"], function() {
     
     game = new TicTacToeGame();
 });

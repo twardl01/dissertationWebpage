@@ -1,21 +1,33 @@
-class credentials {
+class Credentials {
     constructor() { /* TODO document why this constructor is empty */ }
-
-    getCredentials() {
-        sessionStorage.getItem("botUsername")
-        sessionStorage.getItem("botPass")
-        sessionStorage.getItem("botChannel")
+    
+    get username() {
+        return sessionStorage.getItem("botUsername");
     }
 
-    setCredentials(newName, newPass, newChannel) {
-        sessionStorage.setItem("botUsername",newName)
-        sessionStorage.setItem("botPass",newPass)
-        sessionStorage.setItem("botChannel",newChannel)
+    get OAuth() {
+        return sessionStorage.getItem("botOAuth");
     }
 
-    clearCredentials() {
+    get channels() {
+        return sessionStorage.getItem("botChannels");
+    }
+
+    set username(username) {
+        sessionStorage.setItem("botUsername",username);
+    }
+
+    set OAuth(oAuth) {
+        sessionStorage.setItem("botOAuth",oAuth);
+    }
+
+    set channels(channels) {
+        sessionStorage.setItem("botChannels",channels);
+    }
+
+    clear() {
         sessionStorage.removeItem("botUsername")
-        sessionStorage.removeItem("botPass")
+        sessionStorage.removeItem("botOAuth")
         sessionStorage.removeItem("botChannel")
     }
 }
