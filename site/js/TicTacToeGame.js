@@ -18,6 +18,10 @@ class TicTacToeGame {
 
         this.chatbot = new ChatbotPlayer(2, this.tttGame);
 
+        console.log("Creating View")
+
+        this.view = new TicTacToeView();
+
         this.userTurn = true;
         this.gameActive = true;
         this.currentPlayer = this.tttGame.returnPlayer();
