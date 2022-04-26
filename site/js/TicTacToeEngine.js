@@ -14,7 +14,8 @@ class TicTacToeEngine {
         } else {
             this.player = 1
         }
-        //TODO sequencing
+
+        $(this).trigger("player-change");
     }
 
     //setters
@@ -55,15 +56,6 @@ class TicTacToeEngine {
 
         if (currentState == 0) {
             this.changePlayer();
-            return;
-        }
-
-        if (currentState == 1) {
-            //TODO win state
-        }
-
-        if (currentState == -1) {
-            //TODO draw state
         }
     }
 
@@ -80,17 +72,20 @@ class TicTacToeEngine {
     //1 if noughts win, 2 if crosses win, 0 if neither win.
     winState() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+        var currentStatus = 0;
         for (let i = 0; i <= 7; i++) {
             if (this.board[moves[i][0]] === this.board[moves[i][1]] && this.board[moves[i][1]] === this.board[moves[i][2]]) {
                 if (this.board[moves[i][0]] != 0) {
-                    return 1;
+                    currentStatus = 1;
+                    break;
                 }
             }
         }
         if (this.movesLeft == 0) {
-            return -1;
+            currentStatus = -1;
         }
-        return 0;
+
+        $(this).trigger('game-status',currentStatus);
     }
 
     //resets the board to being empty
