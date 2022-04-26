@@ -1,4 +1,5 @@
 class TicTacToeView {
+    //local variables
     #game;
     #statusDisplay;
 

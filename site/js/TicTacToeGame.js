@@ -20,7 +20,7 @@ class TicTacToeGame {
 
         console.log("Creating View")
 
-        this.view = new TicTacToeView();
+        this.view = new TicTacToeView(this.tttGame);
 
         this.userTurn = true;
         this.gameActive = true;
@@ -32,11 +32,13 @@ class TicTacToeGame {
 
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
 
-        document.querySelector('.btnRestart').addEventListener('click', this.handleRestartGame);
-        document.querySelector('.btnStart').addEventListener('click', this.handleStartGame);
-        document.querySelector('.btnStop').addEventListener('click', this.handleStopGame);
-        document.querySelector('.btnCredentials').addEventListener('click', this.handleCredentials);
+        $(this.view).on('restart-game',() => this.handleRestartGame());
+        $(this.view).on('start-game',() => this.handleStartGame());
+        $(this.view).on('stop-game',() => this.handleStopGame());
+        $(this.view).on('enter-credentials',() => this.handleCredentials());
 
+        $(this).on('player-change')
+        $(this).on('refresh-view',this.view.refresh());
         console.log("TicTacToeGame:Constructor returns");
     }
         
@@ -50,35 +52,12 @@ class TicTacToeGame {
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
     }
 
-    handleResultValidation() {
-        let state = this.tttGame.winState();
-        console.log(state);
-        console.log(this.tttGame.returnBoard());
-
-        if (state === 1) {
-            this.statusDisplay.innerHTML = winningMessage();
-            this.tttGame.makeInactive();
-            console.log("Win Detected")
-            return;
-        }
-
-        if (state === -1) {
-            this.statusDisplay.innerHTML = drawMessage();
-            this.tttGame.makeInactive();
-            console.log("Draw Detected")
-            return;
-        }
-
-        console.log("Move Played")
-
-        this.handlePlayerChange();
-    }
-
     handleRestartGame() {
-        this.tttGame.makeActive()
         this.currentPlayer = 1;
         this.tttGame.resetBoard();
-        this.statusDisplay.innerHTML = currentPlayerTurn();
+        
+        $(this.tttGame).trigger('reset-board');
+        $(this).trigger('refresh-view');
 
         document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
     }
@@ -96,7 +75,7 @@ class TicTacToeGame {
     }
 
     handleStopGame() {
-        this.tttGame.makeInactive();
+        $(this.tttGame).trigger('make-inactive');
     }
 
     handleCredentials() {
