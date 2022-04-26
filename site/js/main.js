@@ -11,7 +11,7 @@ requirejs.config({
     }
 });
 
-requirejs(["app/TicTacToeGame", "app/TicTacToeModel","app/TicTacToeView", "app/Player","app/chatbotPlayer", "app/humanPlayer", "lib/tmi.js", "jquery"], function() {
-
+requirejs(["app/TicTacToeGame", "app/TicTacToeModel","app/TicTacToeView", "app/Players", "lib/tmi.js", "jquery"], function() {
+    
     game = new TicTacToeGame();
 });

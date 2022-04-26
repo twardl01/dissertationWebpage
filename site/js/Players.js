@@ -1,3 +1,58 @@
+class Player {
+    constructor(id) {
+        this.id = id;
+        this.myTurn = false;
+    }
+
+    playerChanged(id) {
+        if (id == this.id) {
+            this.myTurn = true;
+        } else {
+            this.myTurn = false;
+        }
+    }
+
+    disable() {
+        this.myTurn = false;
+    }
+}
+
+class HumanPlayer extends Player {
+    constructor(id, engine) {
+        document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
+        super(id);
+
+        this.engine = engine;
+    }
+
+    handleCellClick(clickedCellEvent) {
+        const clickedCell = clickedCellEvent.target;
+        const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
+
+        console.log("Processing cell click: " + clickedCellIndex);
+
+        if (!this.engine.isEmpty(clickedCellIndex)) {
+            console.log("Cell already used")
+            return;
+        }
+
+        if (!this.engine.active) {
+            console.log("Engine is inactive, ignoring click")
+            return;
+        }
+
+        if (!this.myTurn) {
+            console.log("Not my turn, ignoring click")
+            return;
+        }
+
+
+        this.engine.makeMove(this.id, clickedCellIndex);
+
+        console.log("Processed cell click: " + clickedCellIndex);
+    }
+}
+
 class ChatbotPlayer extends Player {
     
     constructor(id, engine) {
@@ -25,8 +80,8 @@ class ChatbotPlayer extends Player {
 
         //adds handlers to handle messages/connection to twitch
         //anonymous function handling the messages
-        this.client.on('message', (channel,_tags,message,self) => {
-            $(this).trigger('message-received',message);
+        this.client.on('message', (channel,tags,message,self) => {
+            $(this).trigger('message-received', tags.username + ": " + message);
             
             if (self) { return; }
         

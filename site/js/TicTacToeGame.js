@@ -22,7 +22,7 @@ class TicTacToeGame {
 
         this.view = new TicTacToeView(this.tttGame);
 
-        this.currentPlayerTurn = () => `It's ${this.tttGame.player}'s turn`;
+        this.currentPlayerTurn = () => `It's Player ${this.tttGame.player}'s turn`;
 
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
 

@@ -5,7 +5,7 @@ class TicTacToeView {
 
     constructor(game) {
         console.log("TicTacToeView:Constructor");
-
+        document.querySelector('.txtChat').value = ""
         this.#game = game;
         this.#statusDisplay = document.querySelector('.txtStatus');
 
