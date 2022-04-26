@@ -1,4 +1,4 @@
-class TicTacToeEngine {
+class TicTacToeModel {
     //init
     //sets board to be an int array of length 9, and movesLeft to be 
     #board;
@@ -19,7 +19,7 @@ class TicTacToeEngine {
             this.#player = 1
         }
 
-        $(this).trigger("player-change");
+        $(this).trigger("player-change",this.#player);
     }
 
     //setters
@@ -48,10 +48,26 @@ class TicTacToeEngine {
         return this.#active;
     }
 
+    startGame() {
+        this.resetBoard();
+        this.#active = true;
+        $(this).trigger('game-change',this.#player);
+        $(this).trigger('player-change',this.#player);
+    }
+
     //places piece at position on the board.
     makeMove(piece, position) {
+        if (!this.#active) {
+            console.log('TicTacToeModel:Board Inactive');
+            return;
+        }
+
         this.#board[position] = piece;
         this.movesLeft--;
+        console.log('TicTacToeEngine:Move Made at ' + position + ' for ' + piece + '.');
+
+        $(this).trigger('game-change');
+
         let currentState = this.winState();
 
         if (currentState == 0) {
@@ -77,11 +93,13 @@ class TicTacToeEngine {
         for (let i = 0; i <= 7; i++) {
             if (this.#board[moves[i][0]] === this.#board[moves[i][1]] && this.#board[moves[i][1]] === this.#board[moves[i][2]]) {
                 if (this.#board[moves[i][0]] != 0) {
+                    console.log("TicTacToeModel:Win Achieved");
                     return 1;
                 }
             }
         }
         if (this.movesLeft == 0) {
+            console.log("TicTacToeModel:Draw Achieved");
             return -1;
         }
 
@@ -92,5 +110,6 @@ class TicTacToeEngine {
     resetBoard() {
         this.#board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
+        $(this).trigger('game-change');
     }
 }

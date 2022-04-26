@@ -5,7 +5,6 @@ class ChatbotPlayer extends Player {
 
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
-        this.active = false;
 
         //twitch client used for fetching data/speaking to the chat
         this.client = new tmi.client({
@@ -27,6 +26,8 @@ class ChatbotPlayer extends Player {
         //adds handlers to handle messages/connection to twitch
         //anonymous function handling the messages
         this.client.on('message', (channel,_tags,message,self) => {
+            $(this).trigger('message-received',message);
+            
             if (self) { return; }
         
             //all commands start with !, used to reduce time spent on non-commands
@@ -36,6 +37,7 @@ class ChatbotPlayer extends Player {
     
             //logs message received (command)
             console.log(message);
+            console.log('message received');
     
             //splits message into multiple strings, which are seperated by spaces.
             const commandTrim = message.trim();
@@ -45,7 +47,9 @@ class ChatbotPlayer extends Player {
             //trim() used to remove all whitespace not removed by message.split
             const commandName = commandParameters[0];
             const commandNum = commandParameters[1];
-    
+            
+            console.log("command split: " + commandName + " + " + commandNum + ", active = " + this.myTurn);
+            
             //commands:
             // !vote - votes for move.
             // !votes - returns votes for a piece.
@@ -53,13 +57,14 @@ class ChatbotPlayer extends Player {
             // !clearVotes - clears votes, resets votes to 0.
             switch (commandName) {
                 case "!vote":
-                    if (this.active) {
+                    if (this.myTurn) {
                         console.log('Vote found for Move ' + commandNum);
                 
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
-                            this.moveVotes[commandNum]++;
-                            console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
+                            engine.makeMove(id, commandNum);
+                            //this.moveVotes[commandNum]++;
+                            //console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
                         } else {
                             console.log('Vote out of Index, not counted.');
                         }
@@ -75,7 +80,7 @@ class ChatbotPlayer extends Player {
                     return;
                 case "!toggle":
                     this.toggleVoting();
-                    console.log('Voting = ' + this.active)
+                    console.log('Voting = ' + this.myTurn)
                     return;
                 case "!clearvotes":
                     this.resetVotes();
@@ -131,11 +136,11 @@ class ChatbotPlayer extends Player {
     }
 
     toggleVoting() {
-        this.active = !this.active
+        this.myTurn = !this.myTurn
     }
 
     votingFunctional() {
-        return this.active
+        return this.myTurn
     }
 
     validMove(voteNum) {

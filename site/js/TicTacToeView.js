@@ -10,10 +10,15 @@ class TicTacToeView {
         this.#statusDisplay = document.querySelector('.txtStatus');
 
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
+       
         document.querySelector('.btnRestart').addEventListener('click', () => $(this).trigger('game-restart'));
         document.querySelector('.btnStart').addEventListener('click', () => $(this).trigger('game-start'));
         document.querySelector('.btnStop').addEventListener('click', () => $(this).trigger('game-stop'));
         document.querySelector('.btnCredentials').addEventListener('click', () => $(this).trigger('enter-credentials'));
+    }
+
+    addMessage(message) {
+        document.querySelector('.txtChat').value += (message + '\n');
     }
 
     refreshStatus() {
@@ -26,7 +31,7 @@ class TicTacToeView {
 
         console.log("Refresh board!");
 
-        let board = this.#game.engine.board;
+        let board = this.#game.board;
  
         for (let i = 0; i < 9; i++) {
             this.updateCell(i, board[i]);

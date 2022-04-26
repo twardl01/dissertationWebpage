@@ -11,4 +11,8 @@ class Player {
             this.myTurn = false;
         }
     }
+
+    disable() {
+        this.myTurn = false;
+    }
 }

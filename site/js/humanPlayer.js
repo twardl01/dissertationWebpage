@@ -17,7 +17,7 @@ class HumanPlayer extends Player {
             return;
         }
 
-        if (!this.engine.isActive()) {
+        if (!this.engine.active) {
             console.log("Engine is inactive, ignoring click")
             return;
         }
@@ -28,13 +28,8 @@ class HumanPlayer extends Player {
         }
 
 
-        this.handleCellPlayed(clickedCell, clickedCellIndex);
+        this.engine.makeMove(this.id, clickedCellIndex);
 
         console.log("Processed cell click: " + clickedCellIndex);
     }
-
-   handleCellPlayed(clickedCell, clickedCellIndex) {
-       this.engine.makeMove(this.id, clickedCellIndex);
-       clickedCell.innerHTML = this.id;
-   }
 }

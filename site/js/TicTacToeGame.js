@@ -1,18 +1,18 @@
-   
 class TicTacToeGame {
-        
+    //MVC controller for Tic Tac Toe game
+
     constructor() {
         console.log("TicTacToeGame:Constructor");
 
         this.statusDisplay = document.querySelector('.txtStatus');
 
-        console.log("Creating TicTacToeEngine");
+        console.log("Creating TicTacToeModel");
 
-        this.tttGame = new TicTacToeEngine();
+        this.tttGame = new TicTacToeModel();
 
         console.log("Creating Human Player");
 
-        this.humanPlayer = new HumanPlayer(1, this.tttGame);
+        this.streamer = new HumanPlayer(1, this.tttGame);
 
         console.log("Creating ChatbotPlayer");
 
@@ -22,52 +22,54 @@ class TicTacToeGame {
 
         this.view = new TicTacToeView(this.tttGame);
 
-        this.userTurn = true;
-        this.gameActive = true;
-        this.currentPlayer = this.tttGame.returnPlayer();
-
-        this.winningMessage = () => `Player ${this.currentPlayer} has won!`;
-        this.drawMessage = () => `Game ended in a draw!`;
-        this.currentPlayerTurn = () => `It's ${this.currentPlayer}'s turn`;
+        this.currentPlayerTurn = () => `It's ${this.tttGame.player}'s turn`;
 
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
 
-        $(this.view).on('restart-game',() => this.handleRestartGame());
-        $(this.view).on('start-game',() => this.handleStartGame());
-        $(this.view).on('stop-game',() => this.handleStopGame());
+        $(this.view).on('game-restart',() => this.handleRestartGame());
+        $(this.view).on('game-start',() => this.tttGame.startGame());
+        $(this.view).on('game-stop',() => this.handleStopGame());
         $(this.view).on('enter-credentials',() => this.handleCredentials());
 
-        $(this.tttGame).on('player-change',(player) => playerChanged(player))
+        $(this.tttGame).on('player-change',(_,player) => this.playerChanged(player));
+        $(this.tttGame).on('game-change',() => this.view.refresh());
+        $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
+
+        $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));
+
         console.log("TicTacToeGame:Constructor returns");
     }
-        
-    start() {
-        console.log("TicTacToeGame:start");
+
+    get board() {
+        return this.tttGame.board;
+    }
+
+    updateGameStatus(gameStatus) {
+        if (gameStatus == 1) {
+            this.statusDisplay.innerHTML = "Player " + this.tttGame.player + " has won!";
+        } else {
+            this.statusDisplay.innerHTML = `Game ended in a Draw!`;
+        }
+
+        this.streamer.disable();
+        this.chatbot.disable();
     }
 
     handlePlayerChange() {
         this.tttGame.changePlayer();
-        this.currentPlayer = this.tttGame.returnPlayer();
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
     }
 
     handleRestartGame() {
-        this.currentPlayer = 1;
+        console.log('TicTacToeGame:Restart Game');
+        this.statusDisplay.innerHTML = "Tic Tac Toe Game";
         this.tttGame.resetBoard();
         this.view.refresh();
     }
 
-    handleStartGame() {
-        this.tttGame.makeActive();
-        if (this.tttGame.winState() != 0) {
-            this.currentPlayer = 1;
-            this.tttGame.resetBoard();
-            this.view.refresh();
-        }
-    }
-
     handleStopGame() {
-        $(this.tttGame).trigger('make-inactive');
+        console.log('TicTacToeGame:Stop Game')
+        this.tttGame.active = false;
     }
 
     handleCredentials() {
@@ -75,7 +77,9 @@ class TicTacToeGame {
     }
 
     playerChanged(id) {
+        console.log('TicTacToeGame:Player Changed: ' + id);
         this.chatbot.playerChanged(id);
-        this.humanPlayer.playerChanged(id);
+        this.streamer.playerChanged(id);
+        this.statusDisplay.innerHTML = this.currentPlayerTurn();
     }
 }
