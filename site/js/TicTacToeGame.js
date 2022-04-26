@@ -22,9 +22,9 @@ class TicTacToeGame {
 
         this.view = new TicTacToeView(this.tttGame);
 
-        this.currentPlayerTurn = () => `It's Player ${this.tttGame.player}'s turn`;
+        this.currentPlayerTurn = () => `It's Player ${this.tttGame.player}'s turn.`;
 
-        this.statusDisplay.innerHTML = this.currentPlayerTurn();
+        this.statusDisplay.innerHTML = "Tic Tac Toe!";
 
         $(this.view).on('game-restart',() => this.handleRestartGame());
         $(this.view).on('game-start',() => this.tttGame.startGame());

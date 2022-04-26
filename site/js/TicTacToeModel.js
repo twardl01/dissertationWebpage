@@ -109,6 +109,7 @@ class TicTacToeModel {
     //resets the board to being empty
     resetBoard() {
         this.#board = [0,0,0,0,0,0,0,0,0];
+        this.#player = 1;
         this.movesLeft = 9;
         $(this).trigger('game-change');
     }

@@ -60,6 +60,7 @@ class ChatbotPlayer extends Player {
 
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
+        this.mode = 0;
 
         //twitch client used for fetching data/speaking to the chat
         this.client = new tmi.client({
@@ -117,21 +118,20 @@ class ChatbotPlayer extends Player {
                 
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
-                            engine.makeMove(id, commandNum);
-                            //this.moveVotes[commandNum]++;
-                            //console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
-                        } else {
-                            console.log('Vote out of Index, not counted.');
+                            if (mode == 0) {
+                                engine.makeMove(id, commandNum);
+                            } else {
+                                this.moveVotes[commandNum]++;
+                                console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
+                            }
                         }
                     }
                     return;
                 case "!votes":
                     if (this.validMove(Number(commandNum))) {
                         this.client.say(channel, "Votes for " + commandNum + ": " + this.moveVotes[commandNum]);
-                        console.log( 'Votes returned for piece' + commandNum);
-                    } else {
-                        console.log('Vote out of Index, not counted.');
-                    }
+                        console.log( 'Votes returned for piece ' + commandNum);
+                    } 
                     return;
                 case "!toggle":
                     this.toggleVoting();
@@ -201,11 +201,16 @@ class ChatbotPlayer extends Player {
     validMove(voteNum) {
         //checks type & contents
         if (voteNum == undefined || !Number.isInteger(voteNum)) {
-            console.log()
+            console.log("invalid move: not a integer. Input = " + voteNum);
             return false;
         }
 
         //checks if value provided is out of the domain
-        return voteNum >= 0 && voteNum < 9;
+        if (this.engine.board[voteNum] != 0) {
+            console.log("invalid move: not in domain. Number = " + voteNum);
+            return false;
+        }
+
+        return true;
     }
 }
