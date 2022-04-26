@@ -1,10 +1,9 @@
-class ChatbotPlayer {
+class ChatbotPlayer extends Player {
     
     constructor(id, engine) {
+        super(id);
 
-        this.id = id;
         this.engine = engine;
-
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.active = false;
 

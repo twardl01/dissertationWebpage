@@ -1,58 +1,56 @@
 class TicTacToeEngine {
     //init
     //sets board to be an int array of length 9, and movesLeft to be 
-    constructor() {
-        this.board = [0,0,0,0,0,0,0,0,0];
-        this.movesLeft = 9;
-        this.active = true;
-        this.player = 1;
+    #board;
+    #player;
+    #active;
 
-        $(this).on('reset-board',this.resetBoard());
+    constructor() {
+        this.#board = [0,0,0,0,0,0,0,0,0];
+        this.movesLeft = 9;
+        this.#active = true;
+        this.#player = 1;
     }
 
     changePlayer() {
-        if (this.player == 1) {
-            this.player = 2
+        if (this.#player == 1) {
+            this.#player = 2
         } else {
-            this.player = 1
+            this.#player = 1
         }
 
         $(this).trigger("player-change");
     }
 
     //setters
-    setBoard(board) {
-        this.board = board;
+    set board(board) {
+        this.#board = board;
     }
 
-    makeActive() {
-        this.active = true;
-    }
-
-    makeInactive(){
-        this.active = false;
+    set active(isActive) {
+        this.#active = isActive;
     }
 
     //getters
-    returnMovesDone() {
+    get movesDone() {
         return 9-(this.movesLeft);
     }
 
-    returnBoard(){
-        return this.board;
+    get board(){
+        return this.#board;
     }
 
-    returnPlayer() {
-        return this.player;
+    get player() {
+        return this.#player;
     }
 
-    isActive() {
-        return this.active;
+    get active() {
+        return this.#active;
     }
 
     //places piece at position on the board.
     makeMove(piece, position) {
-        this.board[position] = piece;
+        this.#board[position] = piece;
         this.movesLeft--;
         let currentState = this.winState();
 
@@ -69,7 +67,7 @@ class TicTacToeEngine {
             console.log("Cell position - OUT OF BOUNDS >> " + position);
         }
 
-        return (this.board[position] != 1 && this.board[position] != 2);
+        return (this.#board[position] != 1 && this.#board[position] != 2);
     }
 
     //returns if either team has won
@@ -77,8 +75,8 @@ class TicTacToeEngine {
     winState() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for (let i = 0; i <= 7; i++) {
-            if (this.board[moves[i][0]] === this.board[moves[i][1]] && this.board[moves[i][1]] === this.board[moves[i][2]]) {
-                if (this.board[moves[i][0]] != 0) {
+            if (this.#board[moves[i][0]] === this.#board[moves[i][1]] && this.#board[moves[i][1]] === this.#board[moves[i][2]]) {
+                if (this.#board[moves[i][0]] != 0) {
                     return 1;
                 }
             }
@@ -92,7 +90,7 @@ class TicTacToeEngine {
 
     //resets the board to being empty
     resetBoard() {
-        this.board = [0,0,0,0,0,0,0,0,0];
+        this.#board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
     }
 }

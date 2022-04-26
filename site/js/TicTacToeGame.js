@@ -37,8 +37,7 @@ class TicTacToeGame {
         $(this.view).on('stop-game',() => this.handleStopGame());
         $(this.view).on('enter-credentials',() => this.handleCredentials());
 
-        $(this).on('player-change')
-        $(this).on('refresh-view',this.view.refresh());
+        $(this.tttGame).on('player-change',(player) => playerChanged(player))
         console.log("TicTacToeGame:Constructor returns");
     }
         
@@ -55,22 +54,15 @@ class TicTacToeGame {
     handleRestartGame() {
         this.currentPlayer = 1;
         this.tttGame.resetBoard();
-        
-        $(this.tttGame).trigger('reset-board');
-        $(this).trigger('refresh-view');
-
-        document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+        this.view.refresh();
     }
 
     handleStartGame() {
-        
         this.tttGame.makeActive();
         if (this.tttGame.winState() != 0) {
             this.currentPlayer = 1;
             this.tttGame.resetBoard();
-            this.statusDisplay.innerHTML = currentPlayerTurn();
-
-            document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+            this.view.refresh();
         }
     }
 
@@ -80,5 +72,10 @@ class TicTacToeGame {
 
     handleCredentials() {
         //TODO - Add Credentials Section
+    }
+
+    playerChanged(id) {
+        this.chatbot.playerChanged(id);
+        this.humanPlayer.playerChanged(id);
     }
 }

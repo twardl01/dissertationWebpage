@@ -1,36 +1,35 @@
-class HumanPlayer {
+class HumanPlayer extends Player {
     constructor(id, engine) {
-       document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
+        document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
+        super(id);
 
-       this.id = id;
-       this.engine = engine;
-       this.myTurn = true;
+        this.engine = engine;
     }
 
     handleCellClick(clickedCellEvent) {
-       const clickedCell = clickedCellEvent.target;
-       const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
+        const clickedCell = clickedCellEvent.target;
+        const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
 
-       console.log("Processing cell click: " + clickedCellIndex);
+        console.log("Processing cell click: " + clickedCellIndex);
 
-       if (!this.engine.isEmpty(clickedCellIndex)) {
-           console.log("Cell already used")
-           return;
-       }
+        if (!this.engine.isEmpty(clickedCellIndex)) {
+            console.log("Cell already used")
+            return;
+        }
 
-       if (!this.engine.isActive()) {
+        if (!this.engine.isActive()) {
             console.log("Engine is inactive, ignoring click")
             return;
         }
-    
+
         if (!this.myTurn) {
             console.log("Not my turn, ignoring click")
             return;
         }
 
-  
+
         this.handleCellPlayed(clickedCell, clickedCellIndex);
- 
+
         console.log("Processed cell click: " + clickedCellIndex);
     }
 
