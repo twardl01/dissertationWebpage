@@ -52,7 +52,8 @@ class TicTacToeModel {
     //starts the game on the board, triggers events for elsewhere
     startGame() {
         if (this.winState != 0) {
-            this.restartGame();   
+            this.restartGame();  
+            $(this).trigger('game-start');
         }
 
         this.#active = true;

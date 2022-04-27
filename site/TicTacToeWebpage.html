@@ -3,6 +3,7 @@
 <html lang="en">
         <head>
             <!--imports all files in js using require.js-->
+            <script src="lib/bootstrap.bundle.min.js"></script>
             <script data-main="js/main" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
             
             <!--imports css styling used in document-->
@@ -11,7 +12,13 @@
 
             <!--makes sure characterset used is unicode-->
             <meta charset="UTF-8">
-        <title>Tic Tac Toe</title> 
+ 
+            <style>
+                .bs-example{
+                    margin: 20px;
+                }
+            </style>
+            <title>Tic Tac Toe</title> 
     </head>
     <body>
         <section>
@@ -49,6 +56,72 @@
                     </div>
                 </div>
             </div>
+
+            <div  class="bs-example">
+                <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Enter Twitch Credentials</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Bot Username</label>
+                                            <input id="cred_username" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Auth Token</label>
+                                            <input id="cred_oauth" type="password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Channel</label>
+                                            <input id="cred_channel" type="text" class="form-control">
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="cred_save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                </div>
+            </div>
         </section>
+        <noscript>
+            <label>Please enable JavaScript to use this website.</label>
+        </noscript>
     </body>
 </html>

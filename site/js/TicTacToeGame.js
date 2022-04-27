@@ -32,11 +32,13 @@ class TicTacToeGame {
         $(this.view).on('game-start',() => this.tttGame.startGame());
         $(this.view).on('game-stop',() => this.tttGame.stopGame());
         $(this.view).on('enter-credentials',() => this.handleCredentials());
+        $(this.view).on('credential-update',() => this.chatbot.updateCredentials())
 
         //defines jQuery events for model
         $(this.tttGame).on('player-change',(_,player) => this.playerChanged(player));
         $(this.tttGame).on('game-change',() => this.view.refresh());
         $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
+        $(this.tttGame).on('game-start',() => this.chatbot.connectClient());
 
         //defines jQuery events for chatbot (manipulation of view)
         $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));
@@ -61,7 +63,8 @@ class TicTacToeGame {
 
         //prevents input
         this.streamer.disable();
-        this.chatbot.disable();
+        this.chatbot.disconnectClient()
+        
     }
 
     //changes the player and displays turn indicator above board
