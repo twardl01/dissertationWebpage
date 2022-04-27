@@ -61,6 +61,7 @@ class TicTacToeModel {
 
     //resets values
     restartGame() {
+        console.log("TicTacToeModel:Restarted Game")
         this.resetBoard();
         this.#active = false;
         $(this).trigger('game-change',this.#player);

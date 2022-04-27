@@ -148,14 +148,6 @@ class ChatbotPlayer extends Player {
                         console.log( 'Votes returned for piece ' + commandNum);
                     } 
                     return;
-                case "!toggle":
-                    this.toggleVoting();
-                    console.log('Voting = ' + this.myTurn)
-                    return;
-                case "!clearvotes":
-                    this.resetVotes();
-                    console.log('Votes Reset!')
-                    return;
                 default:
                     console.log('No command with name ' + commandName);
             }
@@ -172,29 +164,25 @@ class ChatbotPlayer extends Player {
 
     //connects client to twitch
     connectClient() {
-        this.connected = true;
-        this.client.connect()
+        try {
+            this.client.connect();
+            this.connected = true;
+        } catch(e) {
+            console.log("Failed to connect: " + e);
+        }
+        
     }
     
     //disconnects client from twitch
     disconnectClient() {
+        this.client.disconnect();
         this.connected = false;
-        this.client.disconnect()
     }
 
     //restarts client
     restartClient() {
-        this.client.disconnect()
-        this.client.connect()
-    }
-
-    //gets votes for a move
-    get moveVotes() {
-        return this.moveVotes;
-    }
-
-    set mode(id) {
-        this.mode = id;
+        this.client.disconnect();
+        this.client.connect();
     }
 
     mostVotedMove() {
@@ -228,10 +216,6 @@ class ChatbotPlayer extends Player {
         }
 
         this.client = this.buildClient();
-    }
-
-    get myTurn() {
-        return this.myTurn;
     }
 
     validMove(voteNum) {

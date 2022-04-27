@@ -59,10 +59,10 @@ class TicTacToeView {
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
        
         //adds jQuery events to each button
-        document.querySelector('.btnRestart').addEventListener('click', () => $(this).trigger('game-restart'));
-        document.querySelector('.btnStart').addEventListener('click', () => $(this).trigger('game-start'));
-        document.querySelector('.btnStop').addEventListener('click', () => $(this).trigger('game-stop'));
-        document.querySelector('.btnCredentials').addEventListener('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
+        $('#btnRestart').on('click', () => $(this).trigger('game-restart'));
+        $('#btnStart').on('click', () => $(this).trigger('game-start'));
+        $('#btnStop').on('click', () => $(this).trigger('game-stop'));
+        $('#btnCredentials').on('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
     }
 
     voteVisualiser(_voteNum) {
@@ -70,7 +70,7 @@ class TicTacToeView {
     }
     //adds message to the txtChat textarea.
     addMessage(message) {
-        document.querySelector('.txtChat').value += (message + '\n');
+        $('.txtChat').value += (message + '\n');
     }
 
     //changes the status message to the value in the model.

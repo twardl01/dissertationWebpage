@@ -4,6 +4,7 @@
         <head>
             <!--imports all files in js using require.js-->
             <script src="lib/bootstrap.bundle.min.js"></script>
+            <script src="https://kit.fontawesome.com/869e72d2aa.js" crossorigin="anonymous"></script>
             <script data-main="js/main" src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
             
             <!--imports css styling used in document-->
@@ -21,13 +22,13 @@
             <title>Tic Tac Toe</title> 
     </head>
     <body>
-        <section>
-            <div class="container">
-                <!--columns used to seperate content into two sides-->
-                <!--first column, used for status & board-->
-                <div class="column">
+        <div class="container-fluid">
+            <!--columns used to seperate content into two sides-->
+            <!--first column, used for status & board-->
+            <div class="row">
+                <div class="col-sm-8">
                     <!--txtStatus displays current game status-->
-                    <h2 class="txtStatus"></h2>
+                    <p class="text-center fs-1 fw-bolder" id="txtStatus">Tic Tac Toe!</p>
 
                     <!--board container, cells used for interaction-->
                     <!--cell index used for identification-->
@@ -43,31 +44,68 @@
                         <div data-cell-index="8" class="cell"></div>
                     </div>
                 </div>
-                <!--second column, used for left side of screen-->
-                <div class="column">
-                    <!--txtChat displays chat input-->
-                    <textarea class="txtChat" disabled="true"></textarea>
-                    <div class="btnContainer">
-                        <!--buttons used for board manipulation + credential entry-->
-                        <button class="btnStart">Start Game</button>
-                        <button class="btnStop">Stop Game</button>
-                        <button class="btnRestart">Restart Game</button>
-                        <button class="btnCredentials">Credentials</button>
 
-                        <div class="accordion" id="accordionOptions">
+                <!--second column, used for left side of screen-->
+                <div class="col-sm-3">
+                    <!--txtChat displays chat input-->
+                    <div>
+                        <textarea class="txtChat" rows="10" cols="50" disabled="true"></textarea>
+                    </div>
+
+                    <!--progress bars used as the graph representing the %age of votes for a move-->
+                    <div class="progress-container">
+                        <div class="progress" id="voteBar1">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 1</div>
+                        </div>
+                        <div class="progress" id="voteBar2">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 2</div>
+                        </div>
+                        <div class="progress" id="voteBar3">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 3</div>
+                        </div>
+                        <div class="progress" id="voteBar4">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 4</div>
+                        </div>
+                        <div class="progress" id="voteBar5">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 5</div>
+                        </div>
+                        <div class="progress" id="voteBar6">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 6</div>
+                        </div>
+                        <div class="progress" id="voteBar7">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 7</div>
+                        </div>
+                        <div class="progress" id="voteBar8">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 8</div>
+                        </div>
+                        <div class="progress" id="voteBar9">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 9</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <!--buttons used for board manipulation + credential entry-->
+                        <button type="button" class="btn btn-primary m-1" id="btnStart"><span class="fa-solid fa-play"></span> Start Game</button>
+                        <button type="button" class="btn btn-primary m-1" id="btnStop"><span class="fa-solid fa-pause"></span> Pause Game</button>
+                        <button type="button" class="btn btn-primary m-1" id="btnRestart"><span class="fa-solid fa-arrows-rotate"></span> Restart Game</button>
+                        <button type="button" class="btn btn-primary m-1" id="btnCredentials"><span class="fa-solid fa-user"></span> Credentials</button>
+                        
+                    </div>
+                    <div class="card">
+                        <div class="accordion m-1" id="accordionOptions">
                             <div class="accordion-item">
-                              <h2 class="accordion-header" id="flush-headingOne">
+                                <h2 class="accordion-header" id="flush-headingOne">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                  Options
+                                    Options
                                 </button>
-                              </h2>
-                              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-primary dropdown-toggle my-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             Chat Input Mode
                                         </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="options_mode">
+                                        <ul class="dropdown-menu my-2" aria-labelledby="dropdownMenuButton1" id="options_mode">
                                             <li><a class="dropdown-item" href="#">Democracy</a></li>
                                             <li><a class="dropdown-item" href="#">Anarchy</a></li>
                                         </ul>
@@ -79,56 +117,56 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="options_save">Save</button>
                                 </div>
-                              </div>
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <div class="bs-example">
-                <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Enter Twitch Credentials</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Bot Username</label>
-                                            <input id="cred_username" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Auth Token</label>
-                                            <input id="cred_oauth" type="password" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Channel</label>
-                                            <input id="cred_channel" type="text" class="form-control">
-                                       </div>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="bs-example">
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Enter Twitch Credentials</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Bot Username</label>
+                                        <input id="cred_username" type="text" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="cred_save">Save</button>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Auth Token</label>
+                                        <input id="cred_oauth" type="password" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Channel</label>
+                                        <input id="cred_channel" type="text" class="form-control">
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="cred_save">Save</button>
+                        </div>
                     </div>
-                </div>           
-            </div>
-        </section>
+                </div>
+            </div>           
+        </div>
         <noscript>
             <label>Please enable JavaScript to use this website.</label>
         </noscript>

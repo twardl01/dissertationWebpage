@@ -5,7 +5,7 @@ class TicTacToeGame {
         //definitions for classes:
         //status display element above board
         console.log("TicTacToeGame:Constructor");
-        this.statusDisplay = document.querySelector('.txtStatus');
+        this.statusDisplay = $('#txtStatus');
 
         //model, handles game logic.
         console.log("Creating TicTacToeModel");
