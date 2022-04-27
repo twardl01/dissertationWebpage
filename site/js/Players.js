@@ -169,6 +169,7 @@ class ChatbotPlayer extends Player {
 
         return client;
     }
+
     //connects client to twitch
     connectClient() {
         this.connected = true;
@@ -188,17 +189,22 @@ class ChatbotPlayer extends Player {
     }
 
     //gets votes for a move
-    getVotes() {
+    get moveVotes() {
         return this.moveVotes;
     }
 
-    votedMove() {
+    set mode(id) {
+        this.mode = id;
+    }
+
+    mostVotedMove() {
         let highestNum = 0;
         for (let i = 0; i < 9; i++) {
             if (this.moveVotes[i] > highestNum) {
                 highestNum = this.moveVotes[i]
             }
         }
+        this.resetVotes();
         return highestNum;
     }
 
@@ -210,7 +216,7 @@ class ChatbotPlayer extends Player {
         this.myTurn = !this.myTurn
     }
 
-    updateCredentials() {
+    updateClient() {
         console.log('session storage details:')
         console.log('username:' +  Credentials.username);
         console.log('OAuth:' + Credentials.OAuth);
@@ -224,8 +230,8 @@ class ChatbotPlayer extends Player {
         this.client = this.buildClient();
     }
 
-    votingFunctional() {
-        return this.myTurn
+    get myTurn() {
+        return this.myTurn;
     }
 
     validMove(voteNum) {

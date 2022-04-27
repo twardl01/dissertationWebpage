@@ -47,6 +47,14 @@ class TicTacToeView {
             console.log("Yeeha! Saving!");
         });
 
+        $('#accordionFlush').on('click','#options_save',() => {
+            console.log('field details:');
+            console.log('username:' +  $('options_mode').val());
+            console.log('OAuth:' + $('options_timeframe').val());
+
+            console.log("Yeeha! Saving!");
+        });
+
         //adds jQuery events to cell clicks.
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
        
