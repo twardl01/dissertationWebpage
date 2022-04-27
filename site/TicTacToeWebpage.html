@@ -24,9 +24,10 @@
     <body>
         <div class="container-fluid">
             <!--columns used to seperate content into two sides-->
+            
             <!--first column, used for status & board-->
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-6 offset-sm-2">
                     <!--txtStatus displays current game status-->
                     <p class="text-center fs-1 fw-bolder" id="txtStatus">Tic Tac Toe!</p>
 
@@ -48,55 +49,73 @@
                 <!--second column, used for left side of screen-->
                 <div class="col-sm-3">
                     <!--txtChat displays chat input-->
-                    <div>
-                        <textarea class="txtChat" rows="10" cols="50" disabled="true"></textarea>
-                    </div>
+                    <textarea class="txtChat" id="txtChat" rows="10" disabled="true"></textarea>
 
                     <!--progress bars used as the graph representing the %age of votes for a move-->
-                    <div class="progress-container">
-                        <div class="progress" id="voteBar1">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 1</div>
-                        </div>
-                        <div class="progress" id="voteBar2">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 2</div>
-                        </div>
-                        <div class="progress" id="voteBar3">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 3</div>
-                        </div>
-                        <div class="progress" id="voteBar4">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 4</div>
-                        </div>
-                        <div class="progress" id="voteBar5">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 5</div>
-                        </div>
-                        <div class="progress" id="voteBar6">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 6</div>
-                        </div>
-                        <div class="progress" id="voteBar7">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 7</div>
-                        </div>
-                        <div class="progress" id="voteBar8">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 8</div>
-                        </div>
-                        <div class="progress" id="voteBar9">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 9</div>
+                    <div class="collapse" id="progressContainer">
+                        <div class="card">
+                            <label for="voteBar1" class="form-label">Piece 1: </label>
+                            <div class="progress" id="voteBar1">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 1</div>
+                            </div>
+
+                            <label for="voteBar2" class="form-label">Piece 2: </label>
+                            <div class="progress" id="voteBar2">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 2</div>
+                            </div>
+
+                            <label for="voteBar3" class="form-label">Piece 3: </label>
+                            <div class="progress" id="voteBar3">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 3</div>
+                            </div>
+
+                            <label for="voteBar4" class="form-label">Piece 4: </label>
+                            <div class="progress" id="voteBar4">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 4</div>
+                            </div>
+
+                            <label for="voteBar5" class="form-label">Piece 5: </label>
+                            <div class="progress" id="voteBar5">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 5</div>
+                            </div>
+
+                            <label for="voteBar6" class="form-label">Piece 6: </label>
+                            <div class="progress" id="voteBar6">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 6</div>
+                            </div>
+
+                            <label for="voteBar7" class="form-label">Piece 7: </label>
+                            <div class="progress" id="voteBar7">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 7</div>
+                            </div>
+
+                            <label for="voteBar8" class="form-label">Piece 8: </label>
+                            <div class="progress" id="voteBar8">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 8</div>
+                            </div>
+
+                            <label for="voteBar9" class="form-label">Piece 9: </label>
+                            <div class="progress" id="voteBar9">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 9</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="card">
                         <!--buttons used for board manipulation + credential entry-->
                         <button type="button" class="btn btn-primary m-1" id="btnStart"><span class="fa-solid fa-play"></span> Start Game</button>
-                        <button type="button" class="btn btn-primary m-1" id="btnStop"><span class="fa-solid fa-pause"></span> Pause Game</button>
+                        <button type="button" class="btn btn-primary m-1" id="btnPause"><span class="fa-solid fa-pause"></span> Pause Game</button>
+                        <button type="button" class="btn btn-primary m-1" id="btnStop"><span class="fa-solid fa-stop"></span> Stop Game</button>
                         <button type="button" class="btn btn-primary m-1" id="btnRestart"><span class="fa-solid fa-arrows-rotate"></span> Restart Game</button>
                         <button type="button" class="btn btn-primary m-1" id="btnCredentials"><span class="fa-solid fa-user"></span> Credentials</button>
                         
                     </div>
-                    <div class="card">
+                    <div class="card my-2">
                         <div class="accordion m-1" id="accordionOptions">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    Options
+                                    <span class="fa-solid fa-gear"></span> Options
                                 </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">

@@ -8,10 +8,14 @@ class TicTacToeView {
         console.log("TicTacToeView:Constructor");
 
         //clears txtChat's contents
-        document.querySelector('.txtChat').value = ""
+        $('#txtChat').val("");
         this.#game = game;
         this.#statusDisplay = document.querySelector('.txtStatus');
         this.credentialModal = new bootstrap.Modal(document.getElementById('myModal'));
+        this.Collapser =  new bootstrap.Collapse($('#progressContainer'), {
+            toggle: false
+        })
+
         
         $('#myModal').on('show.bs.modal', (_e) =>  {
             console.log(_e);
@@ -49,8 +53,8 @@ class TicTacToeView {
 
         $('#accordionFlush').on('click','#options_save',() => {
             console.log('field details:');
-            console.log('username:' +  $('options_mode').val());
-            console.log('OAuth:' + $('options_timeframe').val());
+            console.log('selected value:' +  $('#options_mode').val());
+            console.log('timeframe (secs):' + $('#options_timeframe').val());
 
             console.log("Yeeha! Saving!");
         });
@@ -61,16 +65,31 @@ class TicTacToeView {
         //adds jQuery events to each button
         $('#btnRestart').on('click', () => $(this).trigger('game-restart'));
         $('#btnStart').on('click', () => $(this).trigger('game-start'));
+        $('#btnPause').on('click', () => $(this).trigger('game-pause'));
         $('#btnStop').on('click', () => $(this).trigger('game-stop'));
         $('#btnCredentials').on('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
     }
 
-    voteVisualiser(_voteNum) {
+    voteVisualiser(voteArray) {
         //TODO add component that visualises votes
+        let total = voteArray[0] + voteArray[1] + voteArray[2] + voteArray[3] + voteArray[4] + voteArray[5] + voteArray[6] + voteArray[7] + voteArray[8];
+        
+        for (let i = 0; i < voteArray.length; i++) {
+            let percentage = voteArray[i]/total;
+            $('#voteBar' + i).width = percentage*100;
+        }
+    }
+
+    voteShow() {
+        this.Collapser.show();
+    }
+
+    voteHide() {
+        this.Collapser.hide();
     }
     //adds message to the txtChat textarea.
     addMessage(message) {
-        $('.txtChat').value += (message + '\n');
+        $('#txtChat').val($('#txtChat').val() + message + '\n');
     }
 
     //changes the status message to the value in the model.

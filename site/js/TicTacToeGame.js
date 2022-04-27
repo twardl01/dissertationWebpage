@@ -29,8 +29,9 @@ class TicTacToeGame {
 
         //defines jQuery events for view
         $(this.view).on('game-restart',() => this.tttGame.restartGame());
-        $(this.view).on('game-start',() => this.tttGame.startGame());
-        $(this.view).on('game-stop',() => this.tttGame.stopGame());
+        $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.voteShow()});
+        $(this.view).on('game-pause',() => {this.tttGame.stopGame(); this.view.voteHide()});
+        $(this.view).on('game-stop',() => {this.tttGame.resetBoard(); this.chatbot.disconnectClient(); this.view.voteHide()});
         $(this.view).on('enter-credentials',() => this.handleCredentials());
         $(this.view).on('credential-update',() => this.chatbot.updateCredentials())
 
@@ -38,7 +39,7 @@ class TicTacToeGame {
         $(this.tttGame).on('player-change',(_,player) => this.playerChanged(player));
         $(this.tttGame).on('game-change',() => this.view.refresh());
         $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
-        $(this.tttGame).on('game-start',() => this.chatbot.connectClient());
+        $(this.tttGame).on('game-start',() => {this.chatbot.connectClient(); this.view.voteShow()});
 
         //defines jQuery events for chatbot (manipulation of view)
         $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));

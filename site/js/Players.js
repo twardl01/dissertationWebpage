@@ -164,19 +164,31 @@ class ChatbotPlayer extends Player {
 
     //connects client to twitch
     connectClient() {
+        if (this.connected) {
+            this.disconnectClient();
+        }
+        
         try {
             this.client.connect();
             this.connected = true;
+            $(this).trigger('message-received','---- Successfully connected to Twitch! ----');
         } catch(e) {
-            console.log("Failed to connect: " + e);
+            $(this).trigger('message-received',"Failed to connect: " + e);
         }
         
     }
     
     //disconnects client from twitch
     disconnectClient() {
-        this.client.disconnect();
-        this.connected = false;
+        if (this.connected) {
+            this.client.disconnect();
+            this.connected = false;
+            $(this).trigger('message-received','---- Successfully disconnected from Twitch! ----');
+            console.log("Disconnected!");
+        } else {
+            console.log("Did not disconnect: No Connection")
+        }
+        
     }
 
     //restarts client

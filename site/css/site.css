@@ -5,7 +5,8 @@ body {
 .cellContainer {
     display: grid;
     grid-template-columns: repeat(3, auto);
-    width: 306px;
+    width: 100%;
+    height:100%;
     margin: 10px auto;
     background-color: #ffffff;
     color: #000000;
@@ -14,9 +15,8 @@ body {
 
 .cell {
     font-family: "Permanent Marker", cursive;
-    width: 100px;
-    height: 100px;
     box-shadow: 2px 2px 2px 2px #000000;
+    resize: none;
     border: 3px solid #000000;
     cursor: pointer;
     line-height: 100px;
@@ -31,55 +31,10 @@ body {
 
 .txtChat {
     width: 100%;
+    height: 33%;
     resize: none;
     font-size:15px;
     margin: 20px auto;
-    border: 2px solid #222222;
-}
-
-.btnContainer{
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    margin: 10px auto;
-    background-color: #2d2d2d;
-    color: #000000;
-    border: 5px solid #222222;
-}
-
-.btnRestart {
-    background-color: #000000;
-    font-size: 25px;
-    color: #ffffff;
-    margin: 10px auto;
-    box-shadow: 2px 2px 2px 2px #222222;
-    border: 2px solid #222222;
-}
-
-.btnStart {
-    background-color: #000000;
-    font-size: 25px;
-    color: #ffffff;
-    margin: 10px auto;
-    box-shadow: 2px 2px 2px 2px #222222;
-    border: 2px solid #222222;
-}
-
-.btnStop {
-    background-color: #000000;
-    font-size: 25px;
-    color: #ffffff;
-    margin: 10px auto;
-    box-shadow: 2px 2px 2px 2px #222222;
-    border: 2px solid #222222;
-}
-
-.btnCredentials {
-    background-color: #000000;
-    font-size: 25px;
-    color: #ffffff;
-    margin: 10px auto;
-    box-shadow: 2px 2px 2px 2px #222222;
-    border: 2px solid #222222;
 }
 
 .column {
