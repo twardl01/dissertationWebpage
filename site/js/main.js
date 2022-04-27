@@ -11,19 +11,11 @@ requirejs.config({
     paths: {
         app: '../js',
         jquery: 'jquery-3.6.0',
-     },
-
-    /*adds dependencies for bootstrap
-    shim: {
-        "jquery.bootstrap": {
-            deps:["jquery"]
-        }
-    }
-    */
+     }
 });
 
 //ensures all modules are imported before page loads
 requirejs(["app/TicTacToeGame", "app/TicTacToeModel","app/TicTacToeView", "app/Players", "app/Credentials", "lib/tmi.js", "jquery"], function() {
-    
+
     game = new TicTacToeGame();
 });
