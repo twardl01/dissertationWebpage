@@ -43,7 +43,7 @@ class HumanPlayer extends Player {
             console.log("Engine is inactive, ignoring click")
             return;
         }
-        
+
         if (!this.engine.isEmpty(clickedCellIndex)) {
             //log that cell is full; leave function
             console.log("Cell already used")
@@ -72,9 +72,12 @@ class ChatbotPlayer extends Player {
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.mode = 0;
+        this.client = this.buildClient();
+    }
 
-        //twitch client used for fetching data/speaking to the chat
-        this.client = new tmi.client({
+    buildClient() {
+         //twitch client used for fetching data/speaking to the chat
+         let client = new tmi.client({
             //ensures
             connection: {
                 secure: true,
@@ -82,17 +85,17 @@ class ChatbotPlayer extends Player {
             },
             //bot channel, bot auth token (used to validate session)
             identity:{
-                username: 'programtest2',
-                password: 'oauth:vtensnspxk74a49vlbjymrr76gsj7n'
+                username: Credentials.username,
+                password: Credentials.OAuth /// 'oauth:vtensnspxk74a49vlbjymrr76gsj7n'
             },
 
             //channel(s) for bot to connect to
-            channels: ['cropsey']
+            channels: [Credentials.channel]
         });
 
         //adds handlers to handle messages/connection to twitch
         //anonymous function handling the messages
-        this.client.on('message', (channel,tags,message,self) => {
+        client.on('message', (channel,tags,message,self) => {
             $(this).trigger('message-received', tags.username + ": " + message);
             
             if (self) { return; }
@@ -130,7 +133,7 @@ class ChatbotPlayer extends Player {
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
                             if (this.mode == 0) {
-                                engine.makeMove(id, commandNum);
+                                this.engine.makeMove(this.id, commandNum);
                             } else {
                                 this.moveVotes[commandNum]++;
                                 console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
@@ -140,7 +143,7 @@ class ChatbotPlayer extends Player {
                     return;
                 case "!votes":
                     if (this.validMove(Number(commandNum))) {
-                        this.client.say(channel, "Votes for " + commandNum + ": " + this.moveVotes[commandNum]);
+                        client.say(channel, "Votes for " + commandNum + ": " + this.moveVotes[commandNum]);
                         console.log( 'Votes returned for piece ' + commandNum);
                     } 
                     return;
@@ -159,13 +162,12 @@ class ChatbotPlayer extends Player {
         });        
         
         //prints line on connection, useful for debug
-        this.client.on('connected', (addr,port) => {
+        client.on('connected', (addr,port) => {
             console.log(`* Connected to ${addr}:${port}`);
         });
 
-        this.connectClient();
+        return client;
     }
-
     //connects client to twitch
     connectClient() {
         this.client.connect()
@@ -203,6 +205,18 @@ class ChatbotPlayer extends Player {
 
     toggleVoting() {
         this.myTurn = !this.myTurn
+    }
+
+    updateCredentials() {
+        console.log('session storage details:')
+        console.log('username:' +  Credentials.username);
+        console.log('OAuth:' + Credentials.OAuth);
+        console.log('channel:' + Credentials.channel);
+        
+        this.client.connection
+        this.disconnectClient();
+
+        this.client = this.buildClient();
     }
 
     votingFunctional() {

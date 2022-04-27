@@ -11,6 +11,41 @@ class TicTacToeView {
         document.querySelector('.txtChat').value = ""
         this.#game = game;
         this.#statusDisplay = document.querySelector('.txtStatus');
+        this.credentialModal = new bootstrap.Modal(document.getElementById('myModal'));
+        
+        $('#myModal').on('show.bs.modal', (_e) =>  {
+            console.log(_e);
+            console.log('text field details:');
+            console.log('username:' +   $('#cred_username').val());
+            console.log('OAuth:' + $('#cred_oauth').val());
+            console.log('channel:' + $('#cred_channel').val());
+
+            $('#cred_username').val(Credentials.username);
+            $('#cred_oauth').val(Credentials.OAuth);
+            $('#cred_channel').val(Credentials.channel);
+
+            console.log('session storage details:')
+            console.log('username:' +  Credentials.username);
+            console.log('OAuth:' + Credentials.OAuth);
+            console.log('channel:' + Credentials.channel);
+
+            // access parsed information through relatedTarget
+            console.log("Yeeha! Showing!");
+        });
+
+        $('#myModal').on('click','#cred_save',() => {
+            console.log('text field details:')
+            console.log('username:' +  $('cred_username').val());
+            console.log('OAuth:' + $('cred_oauth').val());
+            console.log('channel:' + $('cred_channel').val());
+
+            Credentials.username = $('#cred_username').val();
+            Credentials.OAuth = $('#cred_oauth').val();
+            Credentials.channel = $('#cred_channel').val();
+
+            $(this).trigger('credential-update');
+            console.log("Yeeha! Saving!");
+        });
 
         //adds jQuery events to cell clicks.
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
@@ -19,9 +54,12 @@ class TicTacToeView {
         document.querySelector('.btnRestart').addEventListener('click', () => $(this).trigger('game-restart'));
         document.querySelector('.btnStart').addEventListener('click', () => $(this).trigger('game-start'));
         document.querySelector('.btnStop').addEventListener('click', () => $(this).trigger('game-stop'));
-        document.querySelector('.btnCredentials').addEventListener('click', () => $(this).trigger('enter-credentials'));
+        document.querySelector('.btnCredentials').addEventListener('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
     }
 
+    voteVisualiser(_voteNum) {
+        //TODO add component that visualises votes
+    }
     //adds message to the txtChat textarea.
     addMessage(message) {
         document.querySelector('.txtChat').value += (message + '\n');
