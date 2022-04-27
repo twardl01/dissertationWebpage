@@ -73,6 +73,7 @@ class ChatbotPlayer extends Player {
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.mode = 0;
         this.client = this.buildClient();
+        this.connected = false;
     }
 
     buildClient() {
@@ -170,11 +171,13 @@ class ChatbotPlayer extends Player {
     }
     //connects client to twitch
     connectClient() {
+        this.connected = true;
         this.client.connect()
     }
     
     //disconnects client from twitch
     disconnectClient() {
+        this.connected = false;
         this.client.disconnect()
     }
 
@@ -213,8 +216,10 @@ class ChatbotPlayer extends Player {
         console.log('OAuth:' + Credentials.OAuth);
         console.log('channel:' + Credentials.channel);
         
-        this.client.connection
-        this.disconnectClient();
+        //disconnects client if connected
+        if (this.connected) {
+            this.disconnectClient();
+        }
 
         this.client = this.buildClient();
     }
