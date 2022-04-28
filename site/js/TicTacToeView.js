@@ -10,7 +10,7 @@ class TicTacToeView {
         //clears txtChat's contents
         $('#txtChat').val("");
         this.#game = game;
-        this.#statusDisplay = document.querySelector('.txtStatus');
+        this.#statusDisplay = document.querySelector('#txtStatus');
         this.credentialModal = new bootstrap.Modal(document.getElementById('myModal'));
         this.Collapser =  new bootstrap.Collapse($('#progressContainer'), {
             toggle: false
@@ -101,7 +101,7 @@ class TicTacToeView {
         $('#btnPause')[0].disabled = false;
         $('#btnStop')[0].disabled = false;
 
-        this.showVote();
+        this.Collapser.show();
     }
 
     pause() {
@@ -109,7 +109,7 @@ class TicTacToeView {
         $('#btnPause')[0].disabled = true;
         $('#btnStop')[0].disabled = false;
 
-        this.hideVote();
+        this.Collapser.hide();
     }
 
     stop() {
@@ -117,7 +117,7 @@ class TicTacToeView {
         $('#btnPause')[0].disabled = true;
         $('#btnStop')[0].disabled = true;
 
-        this.hideVote();
+        this.Collapser.hide();
     }
 
     updateVote(voteArray) {
@@ -144,14 +144,6 @@ class TicTacToeView {
         }
     }
 
-    showVote() {
-        this.Collapser.show();
-    }
-
-    hideVote() {
-        this.Collapser.hide();
-    }
-
     clearVotes() {
         for (let i = 0; i < this.#game.board.length; i++) {
             document.getElementById('voteBar' + i).setAttribute("aria-valuenow",0);
@@ -165,21 +157,26 @@ class TicTacToeView {
 
     //changes the status message to the value in the model.
     refreshStatus() {
-
         console.log("Refresh status message");
-        this.#statusDisplay.innerHTML = this.#game.statusMessage;
+        if (this.#game.player == 2) {
+            this.#statusDisplay.innerHTML = "Chat's Turn!";
+        } else {
+            this.#statusDisplay.innerHTML = "Player's Turn!";
+        }
+        
     }
 
     //refreshes board cells
     refresh() {
 
         console.log("Refresh board!");
-
         let board = this.#game.board;
- 
+        
         for (let i = 0; i < 9; i++) {
             this.updateCell(i, board[i]);
         }
+
+        this.refreshStatus();
     }
 
     //updates cells to adapt to any changes
@@ -187,9 +184,11 @@ class TicTacToeView {
 
         var content = "";
         if (player == 1) {
+            document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000;");
             content = "X"
         }
         else if (player == 2) {
+            document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff;");
             content = "O";
         }
         

@@ -135,7 +135,6 @@ class ChatbotPlayer extends Player {
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
                             if (this.mode == 0) {
-
                                 this.engine.makeMove(this.id, commandNum);
                             } else {
                                 this.moveVotes[commandNum]++;
@@ -143,8 +142,6 @@ class ChatbotPlayer extends Player {
                                 console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
                                 console.log(this.moveVotes);
                                 $(this).trigger('vote-received',this.moveVotes);
-
-                                //this.engine.makeMove(this.id,this.mostVotedMove());
                             }
                         }
                     }

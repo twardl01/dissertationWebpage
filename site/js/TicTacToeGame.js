@@ -27,11 +27,18 @@ class TicTacToeGame {
         this.currentPlayerTurn = () => `It's Player ${this.tttGame.player}'s turn.`;
         this.statusDisplay.innerHTML = "Tic Tac Toe!";
 
+        this.chatbotTimer;
+        this.timerSet = false;
+
         //defines jQuery events for view
         $(this.view).on('game-restart',() => this.tttGame.restartGame());
-        $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();});
-        $(this.view).on('game-pause',() => {this.tttGame.stopGame(); this.view.pause();});
-        $(this.view).on('game-stop',() => {this.tttGame.resetBoard(); this.chatbot.disconnectClient(); this.view.stop()});
+        $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();          
+            if (this.tttGame.player == 2) {
+                this.chatbotMove();
+            } 
+        });
+        $(this.view).on('game-pause',() => {this.tttGame.pauseGame(); this.view.pause();this.cancelChatbotTimer();});
+        $(this.view).on('game-stop',() => {this.tttGame.stopGame(); this.cancelChatbotTimer(); this.chatbot.disconnectClient(); this.view.stop()});
         $(this.view).on('enter-credentials',() => this.handleCredentials());
         $(this.view).on('credential-update',() => this.chatbot.updateClient())
 
@@ -39,12 +46,10 @@ class TicTacToeGame {
         $(this.tttGame).on('player-change',(_,player) => {
             this.playerChanged(player)
             if (player == 2 && this.chatbot.mode == 1) {
-                this.view.clearVotes();
-                console.log("Timer Started! Time = " + Credentials.timeframe);
-                setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove())},Credentials.timeframe);
+                this.chatbotMove();
             }
         });
-        
+
         $(this.tttGame).on('game-change',() => this.view.refresh());
         $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
         $(this.tttGame).on('game-start',() => {this.chatbot.connectClient(); this.view.start()});
@@ -72,6 +77,7 @@ class TicTacToeGame {
         }
 
         //prevents input
+        this.tttGame.gameActive = false;
         this.streamer.disable();
         this.chatbot.disconnectClient();
         this.view.stop();
@@ -93,5 +99,19 @@ class TicTacToeGame {
         this.chatbot.playerChanged(id);
         this.streamer.playerChanged(id);
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
+    }
+
+    chatbotMove() {
+        this.view.clearVotes();
+        console.log("Timer Started! Time = " + Credentials.timeframe);
+        this.timerSet = true;
+        this.chatbotTimer = setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove()); this.timerSet = false;},Credentials.timeframe);
+    }       
+
+    cancelChatbotTimer() {
+        if (this.timerSet) {
+            clearTimeout(this.chatbotTimer);
+            console.log("Stopped timer!");
+        }
     }
 }

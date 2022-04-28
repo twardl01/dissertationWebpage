@@ -4,12 +4,14 @@ class TicTacToeModel {
     #board;
     #player;
     #active;
+    #gameActive;
 
     constructor() {
         this.#board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
         this.#active = true;
         this.#player = 1;
+        this.#gameActive = false;
     }
 
     //changes player, triggers event for other components
@@ -32,6 +34,10 @@ class TicTacToeModel {
         this.#active = isActive;
     }
 
+    set gameActive(gameState) {
+        this.#gameActive = gameState;
+    }
+
     //getters
     get movesDone() {
         return 9-(this.movesLeft);
@@ -49,13 +55,18 @@ class TicTacToeModel {
         return this.#active;
     }
 
+    get gameActive() {
+        return this.#gameActive;
+    }
+
     //starts the game on the board, triggers events for elsewhere
     startGame() {
-        if (this.winState != 0) {
+        if (!this.#gameActive) {
             this.restartGame();  
             $(this).trigger('game-start');
         }
-
+        
+        this.#gameActive = true;
         this.#active = true;
     }
 
@@ -69,8 +80,14 @@ class TicTacToeModel {
     }
 
     //stops any input from being performed
+    pauseGame() {
+        this.#active = false;
+    }
+
     stopGame() {
         this.#active = false;
+        this.#gameActive = false;
+        this.resetBoard();
     }
 
     //places piece at position on the board.
