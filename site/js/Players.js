@@ -72,7 +72,6 @@ class ChatbotPlayer extends Player {
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.mode = 1;
-        this.timeframe = 5000;
         this.client = this.buildClient();
         this.connected = false;
     }

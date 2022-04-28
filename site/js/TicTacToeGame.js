@@ -39,10 +39,12 @@ class TicTacToeGame {
         $(this.tttGame).on('player-change',(_,player) => {
             this.playerChanged(player)
             if (player == 2 && this.chatbot.mode == 1) {
+                this.view.clearVotes();
                 console.log("Timer Started! Time = " + Credentials.timeframe);
                 setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove())},Credentials.timeframe);
             }
         });
+        
         $(this.tttGame).on('game-change',() => this.view.refresh());
         $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
         $(this.tttGame).on('game-start',() => {this.chatbot.connectClient(); this.view.start()});

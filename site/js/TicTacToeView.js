@@ -81,10 +81,7 @@ class TicTacToeView {
             console.log("Yeeha! Saving!");
         });
 
-        for (let i = 0; i < game.board.length; i++) {
-            document.getElementById('voteBar' + i).setAttribute("aria-valuenow",0);
-            document.getElementById('voteBar' + i).setAttribute("style", "width: " + 0 + "%");
-        }
+        this.clearVotes();
 
         //adds jQuery events to cell clicks.
         document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', (clickedCellEvent) => this.handleCellClick(clickedCellEvent)));
@@ -153,6 +150,13 @@ class TicTacToeView {
 
     hideVote() {
         this.Collapser.hide();
+    }
+
+    clearVotes() {
+        for (let i = 0; i < this.#game.board.length; i++) {
+            document.getElementById('voteBar' + i).setAttribute("aria-valuenow",0);
+            document.getElementById('voteBar' + i).setAttribute("style", "width: " + 0 + "%");
+        }
     }
     //adds message to the txtChat textarea.
     addMessage(message) {
