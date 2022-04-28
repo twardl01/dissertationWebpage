@@ -65,13 +65,18 @@ class HumanPlayer extends Player {
 }
 
 class ChatbotPlayer extends Player {
-    
+
     constructor(id, engine) {
         super(id);
 
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
-        this.mode = 1;
+        if (Credentials.mode == undefined) {
+            this.mode = 0;
+        } else {
+            this.mode = Credentials.mode;
+        }
+
         this.client = this.buildClient();
         this.connected = false;
     }
@@ -241,7 +246,11 @@ class ChatbotPlayer extends Player {
             this.disconnectClient();
         }
 
+        this.mode = Credentials.mode;
+
         this.client = this.buildClient();
+
+        this.connectClient();
     }
 
     validMove(voteNum) {

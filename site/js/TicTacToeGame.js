@@ -27,22 +27,33 @@ class TicTacToeGame {
         this.currentPlayerTurn = () => `It's Player ${this.tttGame.player}'s turn.`;
         this.statusDisplay.innerHTML = "Tic Tac Toe!";
 
-        this.chatbotTimer;
+        this.chatbotTimer = undefined;
         this.timerSet = false;
 
-        //defines jQuery events for view
-        $(this.view).on('game-restart',() => {this.tttGame.restartGame(); this.view.start();});
+        //handle all view button presses that aren't in the HTML code
+        $(this.view).on('game-restart',() => this.tttGame.restartGame());
         $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();          
-            if (this.tttGame.player == 2) {
+            if (this.tttGame.player == 2 && Credentials.mode == 1) {
                 this.chatbotMove();
             } 
         });
         $(this.view).on('game-pause',() => {this.tttGame.pauseGame(); this.view.pause();this.cancelChatbotTimer();});
         $(this.view).on('game-stop',() => {this.tttGame.stopGame(); this.cancelChatbotTimer(); this.chatbot.disconnectClient(); this.view.stop()});
         $(this.view).on('enter-credentials',() => this.handleCredentials());
-        $(this.view).on('credential-update',() => this.chatbot.updateClient())
+        $(this.view).on('credential-update',() => this.chatbot.updateClient());
+        
+        //defines jQuery events for handling options changing via. options accordion
+        $(this.view).on('options-change',() => {
+            if (this.timerSet) {
+                this.cancelChatbotTimer();
+            }
+            this.chatbot.updateClient();
+            if (this.tttGame.player == 2 && Credentials.mode == 1) {
+                this.chatbotMove();
+            }
+        });
 
-        //defines jQuery events for model
+        //defines jQuery events for changing of players
         $(this.tttGame).on('player-change',(_,player) => {
             this.playerChanged(player)
             if (player == 2 && this.chatbot.mode == 1) {
@@ -50,6 +61,7 @@ class TicTacToeGame {
             }
         });
 
+        //define jQuery events for the internal tttGame states
         $(this.tttGame).on('game-change',() => this.view.refresh());
         $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
         $(this.tttGame).on('game-start',() => {this.chatbot.connectClient(); this.view.start()});

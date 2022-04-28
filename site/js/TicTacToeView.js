@@ -16,8 +16,18 @@ class TicTacToeView {
         this.Collapser =  new bootstrap.Collapse($('#progressContainer'), {
             toggle: false
         })
-
+        this.mode = undefined;
         
+        if (Credentials.mode != undefined) {
+            if (Credentials.mode == 1) {
+                $('#btnDemocracy').disabled = false;
+                $('#btnAnarchy').disabled = true;
+            } else {
+                $('#btnDemocracy').disabled = true;
+                $('#btnAnarchy').disabled = false;
+            }
+        }
+
         $('#myModal').on('show.bs.modal', (_e) =>  {
             console.log(_e);
             console.log('text field details:');
@@ -53,31 +63,24 @@ class TicTacToeView {
         });
 
         $('#btnDemocracy').on('click', () => {
-            $('#btnDemocracy').checked = true;
-            $('#btnAnarchy').checked = false;
+            this.mode = 1;
+            $('#options_timeframe')[0].disabled = false;
         });
 
         $('#btnAnarchy').on('click', () => {
-            $('#btnDemocracy').checked = false;
-            $('#btnAnarchy').checked = true;
+            this.mode = 0;
+            $('#options_timeframe')[0].disabled = true;
         });
 
         $('#options_save').on('click',() => {
             console.log('field details:');
-            console.log('selected value:' + document.getElementById('btnDemocracy').getAttribute('checked') + " " + document.getElementById('btnAnarchy').getAttribute('checked'))
+            console.log('selected value:' + this.mode);
             console.log('timeframe (secs):' + $('#options_timeframe').val());
 
-            Credentials.timeframe = $('#options_timeframe').val()*1000
-            if (document.getElementById('btnDemocracy').getAttribute('checked')) {
-                Credentials.timeframe = $('btnDemocracy').val()
-            } else {
-                if (document.getElementById('btnAnarchy').getAttribute('checked')) {
-                    Credentials.timeframe = $('btnAnarchy').val()
-                } else {
-                    console.log("No mode selected!")
-                    return;
-                }
-
+            if (this.mode != undefined) {
+                Credentials.mode = this.mode;
+                Credentials.timeframe = $('#options_timeframe').val()*1000;
+                $(this).trigger('options-change');
             }
             console.log("Yeeha! Saving!");
         });
@@ -93,6 +96,14 @@ class TicTacToeView {
         $('#btnPause').on('click', () => $(this).trigger('game-pause'));
         $('#btnStop').on('click', () => $(this).trigger('game-stop'));
         $('#btnCredentials').on('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
+
+        if (Credentials.mode == 1) {
+            $('btnDemocracy').checked = true;
+        }
+
+        if (Credentials.mode == 0) {
+            $('btnActive').checked = true;
+        }
 
         this.refreshStatus(" ");
         this.stop();
@@ -214,7 +225,7 @@ class TicTacToeView {
 
         if (player == 1) {
             if (inWinningMoves) {
-                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000; animation-name: xWin; animation-duration: 4;");
+                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000; text-shadow: 2px 2px #0000ff;");
             } else {
                 document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000;");
             }
@@ -222,7 +233,7 @@ class TicTacToeView {
         }
         else if (player == 2) {
             if (inWinningMoves) {
-                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff;  animation-name: oWin; animation-duration: 4;");
+                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff; text-shadow: 2px 2px #ff0000;");
             } else {
                 document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff;");
             }
