@@ -19,7 +19,7 @@ class Credentials {
     //ternary deals with unassigned values for timeframe & mode
     static get timeframe() {
         let sessionTimeframe = sessionStorage.getItem("botTimeframe");
-        return sessionTimeframe == undefined ? 15 : sessionTimeframe;
+        return sessionTimeframe == undefined ? 15000 : sessionTimeframe;
     }
 
     static get mode() {

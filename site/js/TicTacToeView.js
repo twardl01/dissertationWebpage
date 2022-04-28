@@ -19,10 +19,10 @@ class TicTacToeView {
         })
 
         //dynamic assignment based on value stored in session storage
-        let democracyMode = Credentials.mode == 1;
-        $('#btnDemocracy')[0].checked = democracyMode;
-        $('#btnAnarchy')[0].checked = !democracyMode;
-        $('#options_timeframe')[0].disabled = !democracyMode;
+        this.democracyMode = Credentials.mode == 1;
+        $('#btnDemocracy')[0].checked = this.democracyMode;
+        $('#btnAnarchy')[0].checked = !this.democracyMode;
+        $('#options_timeframe')[0].disabled = !this.democracyMode;
 
         //sets timeframe & label to value stored in session storage
         $('#num').val(Credentials.timeframe/1000 + " secs");
@@ -46,16 +46,18 @@ class TicTacToeView {
 
         //disable/enable range on button click
         $('#btnDemocracy').on('click', () => {
+            this.democracyMode = false;
             $('#options_timeframe')[0].disabled = false;
         });
 
         $('#btnAnarchy').on('click', () => {
+            this.democracyMode = true;
             $('#options_timeframe')[0].disabled = true;
         });
 
         //save values on button click
         $('#options_save').on('click',() => {
-            Credentials.mode = $('#btnDemocracy')[0].checked ? 0 : 1;
+            Credentials.mode = this.democracyMode ? 0 : 1;
             Credentials.timeframe = $('#options_timeframe').val()*1000;
             $(this).trigger('options-change');
         });
