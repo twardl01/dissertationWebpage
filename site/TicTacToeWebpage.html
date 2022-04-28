@@ -29,86 +29,152 @@
             <div class="row">
                 <div class="col-sm-6 offset-sm-2">
                     <!--txtStatus displays current game status-->
-                    <p class="text-center fs-1 fw-bolder" id="txtStatus">Tic Tac Toe!</p>
+                    <div class="card m-2">
+                        <p class="align-middle text-center fs-1 fw-bolder" id="txtStatus">Tic Tac Toe!</p>
+                    </div>
 
                     <!--board container, cells used for interaction-->
                     <!--cell index used for identification-->
-                    <div class="cellContainer">
-                        <div data-cell-index="0" class="cell"></div>
-                        <div data-cell-index="1" class="cell"></div>
-                        <div data-cell-index="2" class="cell"></div>
-                        <div data-cell-index="3" class="cell"></div>
-                        <div data-cell-index="4" class="cell"></div>
-                        <div data-cell-index="5" class="cell"></div>
-                        <div data-cell-index="6" class="cell"></div>
-                        <div data-cell-index="7" class="cell"></div>
-                        <div data-cell-index="8" class="cell"></div>
+                    <div class="container">
+                        <table id="board">
+                            <tr>
+                                <td class="cell" data-cell-index="0"></td>
+                                <td class="cell" data-cell-index="1"></td>
+                                <td class="cell" data-cell-index="2"></td>
+                            </tr>
+                            <tr>
+                                <td class="cell" data-cell-index="3"></td>
+                                <td class="cell" data-cell-index="4"></td>
+                                <td class="cell" data-cell-index="5"></td>
+                            </tr>
+                            <tr>
+                                <td class="cell" data-cell-index="6"></td>
+                                <td class="cell" data-cell-index="7"></td>
+                                <td class="cell" data-cell-index="8"></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-
-                <!--second column, used for left side of screen-->
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <!--txtChat displays chat input-->
                     <textarea class="txtChat" id="txtChat" rows="10" disabled="true"></textarea>
-
+        
                     <!--progress bars used as the graph representing the %age of votes for a move-->
                     <div class="collapse" id="progressContainer">
-                        <div class="card">
-                            <label for="voteBar1" class="form-label">Piece 1: </label>
-                            <div class="progress" id="voteBar1">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 1</div>
+                        <div class="card mb-1">
+                            <div class="card-body p-0 ms-2 mt-1">
+                                <h5 class="card-title">Votes</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">0:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar0" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <label for="voteBar2" class="form-label">Piece 2: </label>
-                            <div class="progress" id="voteBar2">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 2</div>
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">1:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar1" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar3" class="form-label">Piece 3: </label>
-                            <div class="progress" id="voteBar3">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 3</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">2:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar4" class="form-label">Piece 4: </label>
-                            <div class="progress" id="voteBar4">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 4</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">3:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar3" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar5" class="form-label">Piece 5: </label>
-                            <div class="progress" id="voteBar5">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 5</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">4:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar4" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar6" class="form-label">Piece 6: </label>
-                            <div class="progress" id="voteBar6">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 6</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">5:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar5" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar7" class="form-label">Piece 7: </label>
-                            <div class="progress" id="voteBar7">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 7</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">6:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar6" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar8" class="form-label">Piece 8: </label>
-                            <div class="progress" id="voteBar8">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 8</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">7:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar7" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <label for="voteBar9" class="form-label">Piece 9: </label>
-                            <div class="progress" id="voteBar9">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Vote 9</div>
+        
+                            <div class="row">
+                                <div class="col-sm-1 text-nowrap px-0">
+                                    <p class="mx-1 text-center text-nowrap my-0" style="width: 100%; float: left;">8:</p>
+                                </div>
+                                <div class="col-sm-11 ps-0">
+                                    <div class="progress"> 
+                                        <div class="progress-bar" id="voteBar8" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card">
+                    
+                    <div class="container my-2"></div>
+                    
+                    <div class="card my-2">
                         <!--buttons used for board manipulation + credential entry-->
                         <button type="button" class="btn btn-primary m-1" id="btnStart"><span class="fa-solid fa-play"></span> Start Game</button>
                         <button type="button" class="btn btn-primary m-1" id="btnPause"><span class="fa-solid fa-pause"></span> Pause Game</button>
                         <button type="button" class="btn btn-primary m-1" id="btnStop"><span class="fa-solid fa-stop"></span> Stop Game</button>
                         <button type="button" class="btn btn-primary m-1" id="btnRestart"><span class="fa-solid fa-arrows-rotate"></span> Restart Game</button>
                         <button type="button" class="btn btn-primary m-1" id="btnCredentials"><span class="fa-solid fa-user"></span> Credentials</button>
-                        
                     </div>
                     <div class="card my-2">
                         <div class="accordion m-1" id="accordionOptions">
@@ -119,23 +185,24 @@
                                 </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <div class="dropdown">
-                                        <button class="btn btn-primary dropdown-toggle my-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Chat Input Mode
-                                        </button>
-                                        <ul class="dropdown-menu my-2" aria-labelledby="dropdownMenuButton1" id="options_mode">
-                                            <li><a class="dropdown-item" href="#">Democracy</a></li>
-                                            <li><a class="dropdown-item" href="#">Anarchy</a></li>
-                                        </ul>
+                                    <div class="accordion-body">
+                                        <div class="row my-2">
+                                            <label for="btn-group" class="form-label">Chat Input Type: </label>
+                                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                                <input type="radio" class="btn-check" name="btnradio" id="btnAnarchy" value="0" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="btnAnarchy">Anarchy</label>
+                                            
+                                                <input type="radio" class="btn-check" name="btnradio" id="btnDemocracy" value="1" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="btnDemocracy">Democracy</label>
+                                            </div>
+                                        </div>
+                                        <div class="row my-2">
+                                            <label for="options_timeframe" class="form-label">Timeframe: </label>
+                                            <input type="range" class="form-range" min="1" max="30" id="options_timeframe">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">Cancel</button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" id="options_save">Save</button>
                                     </div>
-
-                                    <label for="options_timeframe" class="form-label">Timeframe</label>
-                                    <input type="range" class="form-range" min="1" max="30" id="options_timeframe">
-
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="options_save">Save</button>
-                                </div>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +210,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-1"></div>
+            
+
+            <!--second column, used for left side of screen-->
+        
         <div class="bs-example">
             <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

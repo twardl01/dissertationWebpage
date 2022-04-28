@@ -1,3 +1,5 @@
+const { timeout } = require("tmi.js/lib/commands");
+
 class Player {
 
     //saves id/bool representing if they can move
@@ -72,11 +74,13 @@ class ChatbotPlayer extends Player {
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
         this.mode = 0;
+        this.timeframe = 30000;
         this.client = this.buildClient();
         this.connected = false;
     }
 
     buildClient() {
+
          //twitch client used for fetching data/speaking to the chat
          let client = new tmi.client({
             //ensures
@@ -134,10 +138,14 @@ class ChatbotPlayer extends Player {
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
                             if (this.mode == 0) {
+
                                 this.engine.makeMove(this.id, commandNum);
                             } else {
                                 this.moveVotes[commandNum]++;
+                                
                                 console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
+                                console.log(this.moveVotes);
+                                $(this).trigger('vote-received',this.moveVotes);
                             }
                         }
                     }
@@ -198,14 +206,23 @@ class ChatbotPlayer extends Player {
     }
 
     mostVotedMove() {
-        let highestNum = 0;
+        let highestIndex = -1;
+        let highestVote = 0;
         for (let i = 0; i < 9; i++) {
-            if (this.moveVotes[i] > highestNum) {
-                highestNum = this.moveVotes[i]
+            if (this.moveVotes[i] > highestVote) {
+                highestIndex = i;
+                highestVote = this.moveVotes[i];
             }
         }
+
+        if (highestIndex == -1) {
+            do {
+                highestIndex = Math.floor(Math.random() * 10);
+            } while (!this.game.isEmpty(highestIndex));
+
+        }
         this.resetVotes();
-        return highestNum;
+        return highestIndex;
     }
 
     resetVotes() {
@@ -214,6 +231,10 @@ class ChatbotPlayer extends Player {
 
     toggleVoting() {
         this.myTurn = !this.myTurn
+    }
+
+    requestHighestMove() {
+        setTimeout(mostVotedMove(),this.timeframe)
     }
 
     updateClient() {

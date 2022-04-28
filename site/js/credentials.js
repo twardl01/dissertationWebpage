@@ -14,6 +14,14 @@ class Credentials {
         return sessionStorage.getItem("botChannel");
     }
 
+    static get timeframe() {
+        return sessionStorage.getItem("botTimeframe");
+    }
+
+    static get mode() {
+        return sessionStorage.getItem("botMode");
+    }
+
     //setters
     static set username(username) {
         sessionStorage.setItem("botUsername",username);
@@ -25,6 +33,14 @@ class Credentials {
 
     static set channel(channel) {
         sessionStorage.setItem("botChannel",channel);
+    }
+
+    static set timeframe(timer) {
+        sessionStorage.setItem("botTimeframe",timer);
+    }
+
+    static set mode(mode) {
+        sessionStorage.setItem("botMode", mode)
     }
 
     //clears session storage

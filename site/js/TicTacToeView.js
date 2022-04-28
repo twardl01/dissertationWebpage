@@ -51,11 +51,33 @@ class TicTacToeView {
             console.log("Yeeha! Saving!");
         });
 
-        $('#accordionFlush').on('click','#options_save',() => {
+        $('#btnDemocracy').on('click', () => {
+            $('#btnDemocracy').checked = true;
+            $('#btnAnarchy').checked = false;
+        });
+
+        $('#btnAnarchy').on('click', () => {
+            $('#btnDemocracy').checked = false;
+            $('#btnAnarchy').checked = true;
+        });
+
+        $('#options_save').on('click',() => {
             console.log('field details:');
-            console.log('selected value:' +  $('#options_mode').val());
+            console.log('selected value:' + document.getElementById('btnDemocracy').getAttribute('checked') + " " + document.getElementById('btnAnarchy').getAttribute('checked'))
             console.log('timeframe (secs):' + $('#options_timeframe').val());
 
+            Credentials.timeframe = $('#options_timeframe').val()*1000
+            if (document.getElementById('btnDemocracy').getAttribute('checked')) {
+                Credentials.timeframe = $('btnDemocracy').val()
+            } else {
+                if (document.getElementById('btnAnarchy').getAttribute('checked')) {
+                    Credentials.timeframe = $('btnAnarchy').val()
+                } else {
+                    console.log("No mode selected!")
+                    return;
+                }
+
+            }
             console.log("Yeeha! Saving!");
         });
 
@@ -68,23 +90,63 @@ class TicTacToeView {
         $('#btnPause').on('click', () => $(this).trigger('game-pause'));
         $('#btnStop').on('click', () => $(this).trigger('game-stop'));
         $('#btnCredentials').on('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
+
+        this.stop();
     }
 
-    voteVisualiser(voteArray) {
-        //TODO add component that visualises votes
-        let total = voteArray[0] + voteArray[1] + voteArray[2] + voteArray[3] + voteArray[4] + voteArray[5] + voteArray[6] + voteArray[7] + voteArray[8];
-        
+    start() {
+        $('#btnStart')[0].disabled = true;
+        $('#btnPause')[0].disabled = false;
+        $('#btnStop')[0].disabled = false;
+
+        this.showVote();
+    }
+
+    pause() {
+        $('#btnStart')[0].disabled = false;
+        $('#btnPause')[0].disabled = true;
+        $('#btnStop')[0].disabled = false;
+
+        this.hideVote();
+    }
+
+    stop() {
+        $('#btnStart')[0].disabled = false;
+        $('#btnPause')[0].disabled = true;
+        $('#btnStop')[0].disabled = true;
+
+        this.hideVote();
+    }
+
+    updateVote(voteArray) {
+        console.log("Updating Votes Counters...");
+        console.log(voteArray);
+        let total = 0;
+
+        voteArray.forEach((vote) => total += vote);
+
+        console.log("Total Votes = " + total);
+
         for (let i = 0; i < voteArray.length; i++) {
-            let percentage = voteArray[i]/total;
-            $('#voteBar' + i).width = percentage*100;
+            let decimal = voteArray[i]/total;
+            let percentage = decimal*100;
+            console.log("The %age of votes for " + i + " are: " + percentage);
+            
+            document.getElementById('voteBar' + i).setAttribute("aria-valuenow",percentage);
+            document.getElementById('voteBar' + i).setAttribute("style", "width: " + percentage + "%");
+            if (voteArray[i] != 0) {
+                document.getElementById('voteBar' + i).innerHTML = Math.round(percentage) + "%";
+            } else {
+                document.getElementById('voteBar' + i).innerHTML = "";
+            }
         }
     }
 
-    voteShow() {
+    showVote() {
         this.Collapser.show();
     }
 
-    voteHide() {
+    hideVote() {
         this.Collapser.hide();
     }
     //adds message to the txtChat textarea.
