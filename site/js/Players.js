@@ -33,34 +33,21 @@ class HumanPlayer extends Player {
     //
     handleCellClick(clickedCellEvent) {
         const clickedCell = clickedCellEvent.target;
-        const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
-
-        console.log("Processing cell click: " + clickedCellIndex);
-
-        
+        const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));   
         if (!this.engine.active) {
-            //log that engine is inactive; leave function
-            console.log("Engine is inactive, ignoring click")
             return;
         }
 
         if (!this.engine.isEmpty(clickedCellIndex)) {
-            //log that cell is full; leave function
-            console.log("Cell already used")
             return;
         }
 
         if (!this.myTurn) {
-            //log that it isn't players turn; leave function
-            console.log("Not my turn, ignoring click")
             return;
         }
 
         //if nothing's wrong, make the move.
         this.engine.makeMove(this.id, clickedCellIndex);
-
-        //log that a move has been made
-        console.log("Processed cell click: " + clickedCellIndex);
     }
 }
 
@@ -114,7 +101,6 @@ class ChatbotPlayer extends Player {
     
             //logs message received (command)
             console.log(message);
-            console.log('message received');
     
             //splits message into multiple strings, which are seperated by spaces.
             const commandTrim = message.trim();
@@ -124,8 +110,7 @@ class ChatbotPlayer extends Player {
             //trim() used to remove all whitespace not removed by message.split
             const commandName = commandParameters[0];
             const commandNum = commandParameters[1];
-            
-            console.log("command split: " + commandName + " + " + commandNum + ", active = " + this.myTurn);
+        
             
             //commands:
             // !vote - votes for move.
@@ -174,7 +159,6 @@ class ChatbotPlayer extends Player {
     //connects client to twitch
     connectClient() {
         if (this.connected) {
-            console.log("Already Connected!");
             return;
         }
         
@@ -191,14 +175,12 @@ class ChatbotPlayer extends Player {
     //disconnects client from twitch
     disconnectClient() {
         if (!this.connected) {
-            console.log("Already Disonnected!");
             return;
         }
 
         this.client.disconnect();
         this.connected = false;
         $(this).trigger('message-received','---- Successfully disconnected from Twitch! ----');
-        console.log("Disconnected!");
     }
 
     //restarts client
@@ -236,10 +218,6 @@ class ChatbotPlayer extends Player {
     }
 
     updateClient() {
-        console.log('session storage details:')
-        console.log('username:' +  Credentials.username);
-        console.log('OAuth:' + Credentials.OAuth);
-        console.log('channel:' + Credentials.channel);
         
         //disconnects client if connected
         if (this.connected) {
@@ -256,13 +234,11 @@ class ChatbotPlayer extends Player {
     validMove(voteNum) {
         //checks type & contents
         if (voteNum == undefined || !Number.isInteger(voteNum)) {
-            console.log("invalid move: not a integer. Input = " + voteNum);
             return false;
         }
 
         //checks if value provided is out of the domain
         if (this.engine.board[voteNum] != 0) {
-            console.log("invalid move: not in domain. Number = " + voteNum);
             return false;
         }
 

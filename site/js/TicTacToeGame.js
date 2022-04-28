@@ -4,23 +4,18 @@ class TicTacToeGame {
     constructor() {
         //definitions for classes:
         //status display element above board
-        console.log("TicTacToeGame:Constructor");
         this.statusDisplay = $('#txtStatus');
 
         //model, handles game logic.
-        console.log("Creating TicTacToeModel");
         this.tttGame = new TicTacToeModel();
 
         //Human player, handles streamer input
-        console.log("Creating Human Player");
         this.streamer = new HumanPlayer(1, this.tttGame);
 
         //Twitch chatbot, handles chat input
-        console.log("Creating ChatbotPlayer");
         this.chatbot = new ChatbotPlayer(2, this.tttGame);
 
         //Visual components, control view and interaction.
-        console.log("Creating View")
         this.view = new TicTacToeView(this.tttGame);
 
         //sets currentPlayerTurn for a player
@@ -31,7 +26,7 @@ class TicTacToeGame {
         this.timerSet = false;
 
         //handle all view button presses that aren't in the HTML code
-        $(this.view).on('game-restart',() => this.tttGame.restartGame());
+        $(this.view).on('game-restart',() => {this.tttGame.restartGame();});
         $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();          
             if (this.tttGame.player == 2 && Credentials.mode == 1) {
                 this.chatbotMove();
@@ -70,9 +65,6 @@ class TicTacToeGame {
         $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));
         $(this.chatbot).on('vote-received',() => this.view.updateVote(this.chatbot.moveVotes));
         $(this.chatbot).on('chatbot-active',() => this.chatbot.requestHighestMove());
-
-        //confirms constructor return
-        console.log("TicTacToeGame:Constructor returns");
     }
 
     //returns array containing tic tac toe board as a 1-d 9-length array
@@ -114,7 +106,6 @@ class TicTacToeGame {
 
     //handles player changes
     playerChanged(id) {
-        console.log('TicTacToeGame:Player Changed: ' + id);
         this.chatbot.playerChanged(id);
         this.streamer.playerChanged(id);
         this.view.refresh();
@@ -122,7 +113,6 @@ class TicTacToeGame {
 
     chatbotMove() {
         this.view.clearVotes();
-        console.log("Timer Started! Time = " + Credentials.timeframe);
         this.timerSet = true;
         this.chatbotTimer = setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove()); this.timerSet = false;},Credentials.timeframe);
     }       
@@ -130,7 +120,6 @@ class TicTacToeGame {
     cancelChatbotTimer() {
         if (this.timerSet) {
             clearTimeout(this.chatbotTimer);
-            console.log("Stopped timer!");
         }
     }
 }

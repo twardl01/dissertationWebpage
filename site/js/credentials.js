@@ -15,11 +15,13 @@ class Credentials {
     }
 
     static get timeframe() {
-        return sessionStorage.getItem("botTimeframe");
+        let sessionTimeframe = sessionStorage.getItem("botTimeframe");
+        return sessionTimeframe == undefined ? 15 : sessionTimeframe;
     }
 
     static get mode() {
-        return sessionStorage.getItem("botMode");
+        let sessionMode = sessionStorage.getItem("botMode");
+        return sessionMode == undefined ? 0 : sessionMode;
     }
 
     //setters
@@ -41,12 +43,5 @@ class Credentials {
 
     static set mode(mode) {
         sessionStorage.setItem("botMode", mode)
-    }
-
-    //clears session storage
-    static clear() {
-        sessionStorage.removeItem("botUsername")
-        sessionStorage.removeItem("botOAuth")
-        sessionStorage.removeItem("botChannel")
     }
 }

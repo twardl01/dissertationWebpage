@@ -208,10 +208,22 @@
                                         </div>
                                         <div class="row my-2">
                                             <label for="options_timeframe" class="form-label">Timeframe: </label>
-                                            <input type="range" class="form-range" min="1" max="30" id="options_timeframe">
+                                            <div class="row">
+                                                    <div class="col-10 pe-0">
+                                                    <input type="range" class="form-range" min="1" max="30" id="options_timeframe" width="90%"oninput="num.value = this.value + ' secs'">
+                                                    </div>
+                                                    <div class="col">
+                                                        <output id="num"></output>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row my-2 float-left">
+                                                <div class="col-4">
+                                                    <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">Cancel</button>
+                                                    <button type="button" class="btn btn-primary me-0" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" id="options_save">Save</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">Cancel</button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" id="options_save">Save</button>
                                     </div>
                                 </div>
                             </div>

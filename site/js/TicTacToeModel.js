@@ -14,17 +14,6 @@ class TicTacToeModel {
         this.#gameActive = false;
     }
 
-    //changes player, triggers event for other components
-    changePlayer() {
-        if (this.#player == 1) {
-            this.#player = 2
-        } else {
-            this.#player = 1
-        }
-
-        $(this).trigger("player-change",this.#player);
-    }
-
     //setters
     set board(board) {
         this.#board = board;
@@ -59,32 +48,28 @@ class TicTacToeModel {
         return this.#gameActive;
     }
 
+    
+    //changes player, triggers event for other components
+    changePlayer() {
+        if (this.#player == 1) {
+            this.#player = 2
+        } else {
+            this.#player = 1
+        }
+
+        $(this).trigger("player-change",this.#player);
+    }
+
     //starts the game on the board, triggers events for elsewhere
     startGame() {
-        if (!this.#gameActive) {
-            this.restartGame();  
+        if (!this.#gameActive) { 
             $(this).trigger('game-start');
+            $(this).trigger('player-change',1);
+            $(this).trigger('game-change');
+            this.#gameActive = true;
         }
-        
-        this.#gameActive = true;
+
         this.#active = true;
-    }
-
-    //resets values
-    restartGame() {
-        console.log("TicTacToeModel:Restarted Game")
-        this.resetBoard();
-        this.#active = false;
-        this.#gameActive = false;
-        
-        $(this).trigger('game-start',this.#player);
-        $(this).trigger('game-change',this.#player);
-        $(this).trigger('player-change',this.#player);
-    }
-
-    //stops any input from being performed
-    pauseGame() {
-        this.#active = false;
     }
 
     stopGame() {
@@ -93,16 +78,25 @@ class TicTacToeModel {
         this.resetBoard();
     }
 
+    //resets board; if initially in a game, restarts & starts game
+    restartGame() {
+        this.stopGame();
+        this.startGame();
+    }
+
+    //stops any input from being performed
+    pauseGame() {
+        this.#active = false;
+    }
+
     //places piece at position on the board.
     makeMove(piece, position) {
         if (!this.#active) {
-            console.log('TicTacToeModel:Board Inactive');
             return;
         }
 
         this.#board[position] = piece;
         this.movesLeft--;
-        console.log('TicTacToeEngine:Move Made at ' + position + ' for ' + piece + '.');
 
         $(this).trigger('game-change');
 
@@ -119,7 +113,7 @@ class TicTacToeModel {
     //returns if position doesn't have a nought or cross placed on it
     isEmpty(position){
         if (position < 0 || position >= 9){
-            console.log("Cell position - OUT OF BOUNDS >> " + position);
+            return false;
         }
 
         return (this.#board[position] != 1 && this.#board[position] != 2);
@@ -132,24 +126,21 @@ class TicTacToeModel {
         for (let i = 0; i <= 7; i++) {
             if (this.#board[moves[i][0]] === this.#board[moves[i][1]] && this.#board[moves[i][1]] === this.#board[moves[i][2]]) {
                 if (this.#board[moves[i][0]] != 0) {
-                    console.log("TicTacToeModel:Win Achieved");
                     return 1;
                 }
             }
         }
         if (this.movesLeft == 0) {
-            console.log("TicTacToeModel:Draw Achieved");
             return -1;
         }
 
         return 0;
     }
 
-    winPlacement(num) {
+    winPlacement() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for (let i = 0; i <= 7; i++) {
             if (this.#board[moves[i][0]] === this.#board[moves[i][1]] && this.#board[moves[i][1]] === this.#board[moves[i][2]] && this.#board[moves[i][0]] != 0) {
-                console.log("TicTacToeModel:Win Move Found: " + moves[i]);
                 return moves[i];
             }
         }
