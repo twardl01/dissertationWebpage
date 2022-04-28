@@ -1,5 +1,3 @@
-const { timeout } = require("tmi.js/lib/commands");
-
 class Player {
 
     //saves id/bool representing if they can move
@@ -73,8 +71,8 @@ class ChatbotPlayer extends Player {
 
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
-        this.mode = 0;
-        this.timeframe = 30000;
+        this.mode = 1;
+        this.timeframe = 5000;
         this.client = this.buildClient();
         this.connected = false;
     }
@@ -146,6 +144,8 @@ class ChatbotPlayer extends Player {
                                 console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
                                 console.log(this.moveVotes);
                                 $(this).trigger('vote-received',this.moveVotes);
+
+                                //this.engine.makeMove(this.id,this.mostVotedMove());
                             }
                         }
                     }
@@ -173,7 +173,8 @@ class ChatbotPlayer extends Player {
     //connects client to twitch
     connectClient() {
         if (this.connected) {
-            this.disconnectClient();
+            console.log("Already Connected!");
+            return;
         }
         
         try {
@@ -188,15 +189,15 @@ class ChatbotPlayer extends Player {
     
     //disconnects client from twitch
     disconnectClient() {
-        if (this.connected) {
-            this.client.disconnect();
-            this.connected = false;
-            $(this).trigger('message-received','---- Successfully disconnected from Twitch! ----');
-            console.log("Disconnected!");
-        } else {
-            console.log("Did not disconnect: No Connection")
+        if (!this.connected) {
+            console.log("Already Disonnected!");
+            return;
         }
-        
+
+        this.client.disconnect();
+        this.connected = false;
+        $(this).trigger('message-received','---- Successfully disconnected from Twitch! ----');
+        console.log("Disconnected!");
     }
 
     //restarts client
@@ -217,8 +218,8 @@ class ChatbotPlayer extends Player {
 
         if (highestIndex == -1) {
             do {
-                highestIndex = Math.floor(Math.random() * 10);
-            } while (!this.game.isEmpty(highestIndex));
+                highestIndex = Math.floor(Math.random() * 9);
+            } while (!this.engine.isEmpty(highestIndex) && highestIndex != 9);
 
         }
         this.resetVotes();
@@ -231,10 +232,6 @@ class ChatbotPlayer extends Player {
 
     toggleVoting() {
         this.myTurn = !this.myTurn
-    }
-
-    requestHighestMove() {
-        setTimeout(mostVotedMove(),this.timeframe)
     }
 
     updateClient() {

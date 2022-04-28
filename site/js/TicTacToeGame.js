@@ -36,7 +36,13 @@ class TicTacToeGame {
         $(this.view).on('credential-update',() => this.chatbot.updateClient())
 
         //defines jQuery events for model
-        $(this.tttGame).on('player-change',(_,player) => this.playerChanged(player));
+        $(this.tttGame).on('player-change',(_,player) => {
+            this.playerChanged(player)
+            if (player == 2 && this.chatbot.mode == 1) {
+                console.log("Timer Started! Time = " + Credentials.timeframe);
+                setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove())},Credentials.timeframe);
+            }
+        });
         $(this.tttGame).on('game-change',() => this.view.refresh());
         $(this.tttGame).on('game-status', (_,gameStatus) => this.updateGameStatus(gameStatus));
         $(this.tttGame).on('game-start',() => {this.chatbot.connectClient(); this.view.start()});
@@ -44,6 +50,7 @@ class TicTacToeGame {
         //defines jQuery events for chatbot (manipulation of view)
         $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));
         $(this.chatbot).on('vote-received',() => this.view.updateVote(this.chatbot.moveVotes));
+        $(this.chatbot).on('chatbot-active',() => this.chatbot.requestHighestMove());
 
         //confirms constructor return
         console.log("TicTacToeGame:Constructor returns");
