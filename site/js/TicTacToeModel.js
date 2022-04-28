@@ -142,6 +142,16 @@ class TicTacToeModel {
         return 0;
     }
 
+    winPlacement(num) {
+        let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+        for (let i = 0; i <= 7; i++) {
+            if (this.#board[moves[i][0]] === this.#board[moves[i][1]] && this.#board[moves[i][1]] === this.#board[moves[i][2]] && this.#board[moves[i][0]] != 0) {
+                console.log("TicTacToeModel:Win Move Found: " + moves[i]);
+                return moves[i];
+            }
+        }
+    }
+
     //resets the board to being empty
     resetBoard() {
         this.#board = [0,0,0,0,0,0,0,0,0];

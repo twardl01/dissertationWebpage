@@ -11,6 +11,7 @@ class TicTacToeView {
         $('#txtChat').val("");
         this.#game = game;
         this.#statusDisplay = document.querySelector('#txtStatus');
+        this.displayContainer = new bootstrap.Collapse('#statusContainer');
         this.credentialModal = new bootstrap.Modal(document.getElementById('myModal'));
         this.Collapser =  new bootstrap.Collapse($('#progressContainer'), {
             toggle: false
@@ -93,6 +94,7 @@ class TicTacToeView {
         $('#btnStop').on('click', () => $(this).trigger('game-stop'));
         $('#btnCredentials').on('click', () => {console.log("Credentials Pressed"); this.credentialModal.show()});
 
+        this.refreshStatus(" ");
         this.stop();
     }
 
@@ -102,6 +104,8 @@ class TicTacToeView {
         $('#btnStop')[0].disabled = false;
 
         this.Collapser.show();
+        this.refreshStatus();
+        this.displayContainer.show();
     }
 
     pause() {
@@ -110,6 +114,7 @@ class TicTacToeView {
         $('#btnStop')[0].disabled = false;
 
         this.Collapser.hide();
+        this.displayContainer.hide();
     }
 
     stop() {
@@ -118,6 +123,7 @@ class TicTacToeView {
         $('#btnStop')[0].disabled = true;
 
         this.Collapser.hide();
+        this.displayContainer.hide();
     }
 
     updateVote(voteArray) {
@@ -153,11 +159,18 @@ class TicTacToeView {
     //adds message to the txtChat textarea.
     addMessage(message) {
         $('#txtChat').val($('#txtChat').val() + message + '\n');
+        $('#txtChat')[0].scrollTop = $('#txtChat')[0].scrollHeight;
     }
 
     //changes the status message to the value in the model.
-    refreshStatus() {
+    refreshStatus(text) {
         console.log("Refresh status message");
+
+        if (text != undefined) {
+            this.#statusDisplay.innerHTML = text;
+            return;
+        }
+
         if (this.#game.player == 2) {
             this.#statusDisplay.innerHTML = "Chat's Turn!";
         } else {
@@ -167,8 +180,12 @@ class TicTacToeView {
     }
 
     //refreshes board cells
-    refresh() {
-
+    refresh(text) {
+        if (text != undefined) {   
+            this.refreshStatus(text);
+        } else {
+            this.refreshStatus();
+        }
         console.log("Refresh board!");
         let board = this.#game.board;
         
@@ -176,19 +193,39 @@ class TicTacToeView {
             this.updateCell(i, board[i]);
         }
 
-        this.refreshStatus();
     }
 
     //updates cells to adapt to any changes
     updateCell(cell, player){
 
         var content = "";
+        var winningMoves = this.#game.winPlacement(cell);
+        console.log("Moves Sent in: " + winningMoves);
+        var inWinningMoves = false;
+
+        if (winningMoves != undefined) {
+            for (const move of winningMoves) {
+                if (cell == move) {
+                    console.log("In winning move: " + cell + " at " + move);
+                    inWinningMoves = true;
+                }
+            }
+        }
+
         if (player == 1) {
-            document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000;");
+            if (inWinningMoves) {
+                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000; animation-name: xWin; animation-duration: 4;");
+            } else {
+                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #ff0000;");
+            }
             content = "X"
         }
         else if (player == 2) {
-            document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff;");
+            if (inWinningMoves) {
+                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff;  animation-name: oWin; animation-duration: 4;");
+            } else {
+                document.querySelector('[data-cell-index="' + cell + '"]').setAttribute("style","color: #0000ff;");
+            }
             content = "O";
         }
         

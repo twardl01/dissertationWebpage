@@ -31,7 +31,7 @@ class TicTacToeGame {
         this.timerSet = false;
 
         //defines jQuery events for view
-        $(this.view).on('game-restart',() => this.tttGame.restartGame());
+        $(this.view).on('game-restart',() => {this.tttGame.restartGame(); this.view.start();});
         $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();          
             if (this.tttGame.player == 2) {
                 this.chatbotMove();
@@ -70,17 +70,24 @@ class TicTacToeGame {
 
     //deals with end states
     updateGameStatus(gameStatus) {
+        let text = "";
+        
         if (gameStatus == 1) {
-            this.statusDisplay.innerHTML = "Player " + this.tttGame.player + " has won!";
+            if (this.tttGame.player == 1) {
+                text = "Player has won!";
+            } else {
+                text = "Chat has won!";
+            }
+            
         } else {
-            this.statusDisplay.innerHTML = `Game ended in a Draw!`;
+            text = `Game ended in a Draw!`;
         }
 
         //prevents input
         this.tttGame.gameActive = false;
         this.streamer.disable();
         this.chatbot.disconnectClient();
-        this.view.stop();
+        this.view.refresh(text);
     }
 
     //changes the player and displays turn indicator above board
@@ -98,7 +105,7 @@ class TicTacToeGame {
         console.log('TicTacToeGame:Player Changed: ' + id);
         this.chatbot.playerChanged(id);
         this.streamer.playerChanged(id);
-        this.statusDisplay.innerHTML = this.currentPlayerTurn();
+        this.view.refresh();
     }
 
     chatbotMove() {
