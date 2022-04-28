@@ -1,6 +1,8 @@
 class Credentials {
     constructor() { /*no need for constructor*/ }
-    
+    //deals with the session storage management
+    //setters and getters to retrieve data
+
     //getters
     static get username() {
         return sessionStorage.getItem("botUsername");
@@ -14,6 +16,7 @@ class Credentials {
         return sessionStorage.getItem("botChannel");
     }
 
+    //ternary deals with unassigned values for timeframe & mode
     static get timeframe() {
         let sessionTimeframe = sessionStorage.getItem("botTimeframe");
         return sessionTimeframe == undefined ? 15 : sessionTimeframe;

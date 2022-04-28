@@ -22,10 +22,11 @@ class TicTacToeGame {
         this.currentPlayerTurn = () => `It's Player ${this.tttGame.player}'s turn.`;
         this.statusDisplay.innerHTML = "Tic Tac Toe!";
 
+        //timer definition & timer activated boolean
         this.chatbotTimer = undefined;
         this.timerSet = false;
 
-        //handle all view button presses that aren't in the HTML code
+        //handle all view button presses that aren't set in the HTML code nor defined in view
         $(this.view).on('game-restart',() => {this.tttGame.restartGame();});
         $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();          
             if (this.tttGame.player == 2 && Credentials.mode == 1) {
@@ -49,6 +50,7 @@ class TicTacToeGame {
         });
 
         //defines jQuery events for changing of players
+        //plays chatbot's move if in democracy mode
         $(this.tttGame).on('player-change',(_,player) => {
             this.playerChanged(player)
             if (player == 2 && this.chatbot.mode == 1) {
@@ -76,18 +78,18 @@ class TicTacToeGame {
     updateGameStatus(gameStatus) {
         let text = "";
         
+        //dynamic win messages
         if (gameStatus == 1) {
             if (this.tttGame.player == 1) {
                 text = "Player has won!";
             } else {
                 text = "Chat has won!";
             }
-            
         } else {
             text = `Game ended in a Draw!`;
         }
 
-        //prevents input
+        //prevents input after winstate
         this.tttGame.gameActive = false;
         this.streamer.disable();
         this.chatbot.disconnectClient();
@@ -100,10 +102,6 @@ class TicTacToeGame {
         this.statusDisplay.innerHTML = this.currentPlayerTurn();
     }
 
-    handleCredentials() {
-        //TODO - Add Credentials Section
-    }
-
     //handles player changes
     playerChanged(id) {
         this.chatbot.playerChanged(id);
@@ -111,12 +109,15 @@ class TicTacToeGame {
         this.view.refresh();
     }
 
+    //performs democracy mode chatbot move
     chatbotMove() {
         this.view.clearVotes();
         this.timerSet = true;
         this.chatbotTimer = setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove()); this.timerSet = false;},Credentials.timeframe);
     }       
 
+
+    //cancels democracy mode timer if started
     cancelChatbotTimer() {
         if (this.timerSet) {
             clearTimeout(this.chatbotTimer);

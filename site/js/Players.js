@@ -53,21 +53,19 @@ class HumanPlayer extends Player {
 
 class ChatbotPlayer extends Player {
 
+    //constructor, sets values.
     constructor(id, engine) {
         super(id);
 
         this.engine = engine;
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
-        if (Credentials.mode == undefined) {
-            this.mode = 0;
-        } else {
-            this.mode = Credentials.mode;
-        }
+        this.mode = Credentials.mode;
 
         this.client = this.buildClient();
         this.connected = false;
     }
 
+    //builds new client with info in credentials
     buildClient() {
 
          //twitch client used for fetching data/speaking to the chat
@@ -158,6 +156,7 @@ class ChatbotPlayer extends Player {
 
     //connects client to twitch
     connectClient() {
+        //ensures no accidental double-connecting
         if (this.connected) {
             return;
         }
@@ -174,6 +173,7 @@ class ChatbotPlayer extends Player {
     
     //disconnects client from twitch
     disconnectClient() {
+        //ensures no accidental double-disconnecting
         if (!this.connected) {
             return;
         }
@@ -189,6 +189,7 @@ class ChatbotPlayer extends Player {
         this.client.connect();
     }
 
+    //returns first instance most voted move, resets votes after.
     mostVotedMove() {
         let highestIndex = -1;
         let highestVote = 0;
@@ -199,6 +200,7 @@ class ChatbotPlayer extends Player {
             }
         }
 
+        //if no votes made, pick move at random. 
         if (highestIndex == -1) {
             do {
                 highestIndex = Math.floor(Math.random() * 9);
@@ -209,23 +211,21 @@ class ChatbotPlayer extends Player {
         return highestIndex;
     }
 
+    //resets all votes to 0
     resetVotes() {
         this.moveVotes = [0,0,0,0,0,0,0,0,0];
     }
 
-    toggleVoting() {
-        this.myTurn = !this.myTurn
-    }
-
     updateClient() {
-        
         //disconnects client if connected
         if (this.connected) {
             this.disconnectClient();
         }
 
+        //sets mode to the value in credentials
         this.mode = Credentials.mode;
 
+        //builds new client with 
         this.client = this.buildClient();
 
         this.connectClient();

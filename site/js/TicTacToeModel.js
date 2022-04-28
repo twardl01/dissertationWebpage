@@ -1,11 +1,14 @@
 class TicTacToeModel {
     //init
-    //sets board to be an int array of length 9, and movesLeft to be 
+
+    //local variables
     #board;
     #player;
     #active;
     #gameActive;
 
+    //sets integral values
+    //no listeners, no need to initialise
     constructor() {
         this.#board = [0,0,0,0,0,0,0,0,0];
         this.movesLeft = 9;
@@ -72,6 +75,7 @@ class TicTacToeModel {
         this.#active = true;
     }
 
+    //stops game, resets board.
     stopGame() {
         this.#active = false;
         this.#gameActive = false;
@@ -120,7 +124,7 @@ class TicTacToeModel {
     }
 
     //returns if either team has won
-    //1 if noughts win, 2 if crosses win, 0 if neither win.
+    //1 if there is a win, 0 if neither are currently winning, -1 if board is full and no win state has been reached.
     winState() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for (let i = 0; i <= 7; i++) {
@@ -137,6 +141,7 @@ class TicTacToeModel {
         return 0;
     }
 
+    //returns the winning line on the board
     winPlacement() {
         let moves = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for (let i = 0; i <= 7; i++) {
@@ -146,7 +151,7 @@ class TicTacToeModel {
         }
     }
 
-    //resets the board to being empty
+    //resets the board to being empty & player reset to human
     resetBoard() {
         this.#board = [0,0,0,0,0,0,0,0,0];
         this.#player = 1;
