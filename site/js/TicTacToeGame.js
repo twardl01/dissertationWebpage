@@ -104,6 +104,8 @@ class TicTacToeGame {
         this.tttGame.gameActive = false;
         this.streamer.disable();
         this.chatbot.disconnectClient();
+
+        //shows new data, with text defined earlier
         this.view.refresh(text);
     }
 
@@ -122,8 +124,11 @@ class TicTacToeGame {
 
     //performs democracy mode chatbot move
     chatbotMove() {
+        //clears votes and sets internal timerset to true
         this.view.clearVotes();
         this.timerSet = true;
+
+        //performs chat output after timeframe, move 1 second later
         this.chatbotTimer = setTimeout(() => {this.chatbot.say("Timer over! No more inputs can be made for this move!"); setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove()); this.timerSet = false;}, 1000);},Credentials.timeframe);
     }       
 

@@ -110,9 +110,9 @@ class TicTacToeModel {
             return;
         }
 
+        //performs move, updates internal movesLeft, signals for view to refresh
         this.#board[position] = piece;
         this.movesLeft--;
-
         $(this).trigger('game-change');
 
         let currentState = this.winState();
