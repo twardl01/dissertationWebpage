@@ -28,15 +28,22 @@ class TicTacToeGame {
 
         //handle all view button presses that aren't set in the HTML code nor defined in view
         $(this.view).on('game-restart',() => {this.tttGame.restartGame();});
-        $(this.view).on('game-start',() => {this.tttGame.startGame(); this.view.start();          
-            if (this.tttGame.player == 2 && Credentials.mode == 1) {
-                this.chatbotMove();
-            } 
+        $(this.view).on('game-start',() => { 
+            //handles cases where no chatbot data in session storage
+            if (Credentials.channel == undefined || Credentials.OAuth == undefined || Credentials.username == undefined) {
+                this.view.enableAlert("danger","Error: Please enter Twitch Bot credentials before starting the game.");
+            } else {
+                this.tttGame.startGame();
+                this.view.start();          
+                if (this.tttGame.player == 2 && Credentials.mode == 1) {
+                    this.chatbotMove();
+                } 
+            }
         });
         $(this.view).on('game-pause',() => {this.tttGame.pauseGame(); this.view.pause();this.cancelChatbotTimer();});
         $(this.view).on('game-stop',() => {this.tttGame.stopGame(); this.cancelChatbotTimer(); this.chatbot.disconnectClient(); this.view.stop()});
         $(this.view).on('enter-credentials',() => this.handleCredentials());
-        $(this.view).on('credential-update',() => this.chatbot.updateClient());
+        $(this.view).on('credential-update',() => {this.chatbot.updateClient(); this.view.enableAlert("success","Credentials Updated!");});
         
         //defines jQuery events for handling options changing via. options accordion
         $(this.view).on('options-change',() => {
@@ -47,6 +54,7 @@ class TicTacToeGame {
             if (this.tttGame.player == 2 && Credentials.mode == 1) {
                 this.chatbotMove();
             }
+            this.view.enableAlert("success","Options Updated!");
         });
 
         //defines jQuery events for changing of players
@@ -67,6 +75,7 @@ class TicTacToeGame {
         $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));
         $(this.chatbot).on('vote-received',() => this.view.updateVote(this.chatbot.moveVotes));
         $(this.chatbot).on('chatbot-active',() => this.chatbot.requestHighestMove());
+        $(this.chatbot).on('failed-connection',() => {this.view.stop()})
     }
 
     //returns array containing tic tac toe board as a 1-d 9-length array

@@ -17,6 +17,8 @@ class TicTacToeView {
         this.Collapser =  new bootstrap.Collapse($('#progressContainer'), {
             toggle: false
         })
+        this.alertPlaceholder = document.getElementById('alert_placeholder');
+
 
         //dynamic assignment based on value stored in session storage
         this.democracyMode = Credentials.mode == 1;
@@ -111,6 +113,13 @@ class TicTacToeView {
 
         this.Collapser.hide();
         this.displayContainer.hide();
+    }
+
+    enableAlert(type, text) {
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible m-2 p-2" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+        this.alertPlaceholder.append(wrapper)
     }
 
     //updates vote progress bars.
