@@ -115,6 +115,8 @@ class TicTacToeView {
         this.displayContainer.hide();
     }
 
+    //creates alert of colour "type" and with text "text"
+    //can be removed on the board via. the button on the alert
     enableAlert(type, text) {
         var wrapper = document.createElement('div');
         wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible m-2 p-2" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
