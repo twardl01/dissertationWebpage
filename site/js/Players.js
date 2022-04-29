@@ -167,15 +167,23 @@ class ChatbotPlayer extends Player {
             return;
         }
         
-        try {
-            this.client.connect();
-            this.connected = true;
-            $(this).trigger('message-received','---- Successfully connected to Twitch! ----');
-        } catch(e) {
-            $(this).trigger('failed-connection');
-            $(this).trigger('message-received',"Failed to connect: " + e);
-        }
+        this.connected = true;
+
+        //handles promise in tmi client
+        this.client.connect()
+            .then(() => {$(this).trigger('chatbot-connected',"---- Successfully Connected! ----")})
+            .catch(() => {
+                $(this).trigger('failed-connection');
+                $(this).trigger('message-received',"---- Failed to Connect! ----");
+                this.connected = false;
+            });
         
+    }
+
+    say(text) {
+        if (this.connected) {
+            this.client.say(Credentials.channel,text)
+        }
     }
     
     //disconnects client from twitch

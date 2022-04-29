@@ -62,6 +62,7 @@ class TicTacToeGame {
         $(this.tttGame).on('player-change',(_,player) => {
             this.playerChanged(player)
             if (player == 2 && this.chatbot.mode == 1) {
+                this.chatbot.say("Timer Started! You have " + Credentials.timeframe/1000 + " seconds to make a vote!");
                 this.chatbotMove();
             }
         });
@@ -74,8 +75,9 @@ class TicTacToeGame {
         //defines jQuery events for chatbot (manipulation of view)
         $(this.chatbot).on('message-received',(_,message) => this.view.addMessage(message));
         $(this.chatbot).on('vote-received',() => this.view.updateVote(this.chatbot.moveVotes));
+        $(this.chatbot).on('chatbot-connected', (_,message) => {this.tttGame.active = true; this.view.addMessage(message)})
         $(this.chatbot).on('chatbot-active',() => this.chatbot.requestHighestMove());
-        $(this.chatbot).on('failed-connection',() => {this.view.stop()})
+        $(this.chatbot).on('failed-connection',() => {this.view.stop(); this.tttGame.stopGame(); this.view.enableAlert("danger","Error: Invalid Twitch Bot credentials.");})
     }
 
     //returns array containing tic tac toe board as a 1-d 9-length array
@@ -122,7 +124,7 @@ class TicTacToeGame {
     chatbotMove() {
         this.view.clearVotes();
         this.timerSet = true;
-        this.chatbotTimer = setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove()); this.timerSet = false;},Credentials.timeframe);
+        this.chatbotTimer = setTimeout(() => {this.chatbot.say("Timer over! No more inputs can be made for this move!"); setTimeout(() => {this.tttGame.makeMove(this.chatbot.id,this.chatbot.mostVotedMove()); this.timerSet = false;}, 1000);},Credentials.timeframe);
     }       
 
 

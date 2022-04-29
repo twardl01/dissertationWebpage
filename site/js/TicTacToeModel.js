@@ -2,9 +2,17 @@ class TicTacToeModel {
     //init
 
     //local variables
+
+    //tic tac toe board state
     #board;
+    
+    //the player currently moving
     #player;
+    
+    //whether moves can be made on the board or not
     #active;
+
+    //whether a game is active or not
     #gameActive;
 
     //sets integral values
@@ -64,15 +72,18 @@ class TicTacToeModel {
     }
 
     //starts the game on the board, triggers events for elsewhere
+    //gameActive set to true when false so that the program knows a game has been started
+    //active set to false so game waits for chatbot, true otherwise for unpausing
     startGame() {
         if (!this.#gameActive) { 
             $(this).trigger('game-start');
             $(this).trigger('player-change',1);
             $(this).trigger('game-change');
             this.#gameActive = true;
+            this.#active = false;
+        } else {
+            this.#active = true;
         }
-
-        this.#active = true;
     }
 
     //stops game, resets board.
