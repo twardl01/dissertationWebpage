@@ -78,7 +78,7 @@ class ChatbotPlayer extends Player {
             //bot channel, bot auth token (used to validate session)
             identity:{
                 username: Credentials.username,
-                password: Credentials.OAuth /// 'oauth:vtensnspxk74a49vlbjymrr76gsj7n'
+                password: Credentials.OAuth
             },
 
             //channel(s) for bot to connect to
@@ -122,13 +122,13 @@ class ChatbotPlayer extends Player {
                 
                         //adds vote if in domain & is integer.
                         if (this.validMove(Number(commandNum))) {
+                            
                             if (this.mode == 0) {
+                                //anarchy mode
                                 this.engine.makeMove(this.id, commandNum);
                             } else {
+                                //democracy mode
                                 this.moveVotes[commandNum]++;
-                                
-                                console.log('Move ' + commandNum + ' was voted for, move now has ' + this.moveVotes[commandNum] + ' votes.');
-                                console.log(this.moveVotes);
                                 $(this).trigger('vote-received',this.moveVotes);
                             }
                         }
@@ -137,11 +137,10 @@ class ChatbotPlayer extends Player {
                 case "!votes":
                     if (this.validMove(Number(commandNum))) {
                         client.say(channel, "Votes for " + commandNum + ": " + this.moveVotes[commandNum]);
-                        console.log( 'Votes returned for piece ' + commandNum);
                     } 
                     return;
                 default:
-                    console.log('No command with name ' + commandName);
+                    client.say(channel,'No command with name ' + commandName);
             }
 
         });        
@@ -166,12 +165,10 @@ class ChatbotPlayer extends Player {
             $(this).trigger('failed-connection');
             return;
         }
-        
-        this.connected = true;
 
-        //handles promise in tmi client
+        //handles promise in tmi client for successful connection and unsuccessful connection
         this.client.connect()
-            .then(() => {$(this).trigger('chatbot-connected',"---- Successfully Connected! ----")})
+            .then(() => {$(this).trigger('chatbot-connected',"---- Successfully Connected! ----"); this.connected = true;})
             .catch(() => {
                 $(this).trigger('failed-connection');
                 $(this).trigger('message-received',"---- Failed to Connect! ----");
@@ -180,6 +177,7 @@ class ChatbotPlayer extends Player {
         
     }
 
+    //makes bot post the contents of text in the stream's chat
     say(text) {
         if (this.connected) {
             this.client.say(Credentials.channel,text)
@@ -192,6 +190,7 @@ class ChatbotPlayer extends Player {
         if (!this.connected) {
             return;
         }
+
 
         this.client.disconnect();
         this.connected = false;
