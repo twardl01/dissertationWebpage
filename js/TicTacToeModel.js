@@ -107,6 +107,7 @@ class TicTacToeModel {
     //places piece at position on the board.
     makeMove(piece, position) {
         if (!this.#active) {
+            console.log("Move not made: board not active");
             return;
         }
 

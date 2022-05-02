@@ -47,4 +47,8 @@ class Credentials {
     static set mode(mode) {
         sessionStorage.setItem("botMode", mode)
     }
+
+    static isDefined() {
+        return Credentials.channel != undefined && Credentials.OAuth != undefined && Credentials.username != undefined;
+    }
 }

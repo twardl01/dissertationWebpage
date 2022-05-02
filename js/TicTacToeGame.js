@@ -30,7 +30,7 @@ class TicTacToeGame {
         $(this.view).on('game-restart',() => {this.tttGame.restartGame();});
         $(this.view).on('game-start',() => { 
             //handles cases where no chatbot data in session storage
-            if (Credentials.channel == undefined || Credentials.OAuth == undefined || Credentials.username == undefined) {
+            if (!Credentials.isDefined()) {
                 this.view.enableAlert("danger","Error: Please enter Twitch Bot credentials before starting the game.");
             } else {
                 this.tttGame.startGame();

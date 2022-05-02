@@ -161,7 +161,7 @@ class ChatbotPlayer extends Player {
         }
         
         //handles cases where no chatbot data in session storage
-        if (Credentials.channel == undefined || Credentials.OAuth == undefined || Credentials.username == undefined) {
+        if (!Credentials.isDefined()) {
             $(this).trigger('failed-connection');
             return;
         }
