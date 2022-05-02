@@ -19,7 +19,6 @@ class TicTacToeView {
         })
         this.alertPlaceholder = document.getElementById('alert_placeholder');
 
-
         //dynamic assignment based on value stored in session storage
         this.democracyMode = Credentials.mode == 1;
         $('#btnDemocracy')[0].checked = this.democracyMode;
@@ -33,14 +32,12 @@ class TicTacToeView {
         //similar to above, with the data within the modal popup.
         $('#myModal').on('show.bs.modal', (_e) =>  {
             $('#cred_username').val(Credentials.username);
-            $('#cred_oauth').val(Credentials.OAuth);
             $('#cred_channel').val(Credentials.channel);
         });
 
         //saves values entered in the modal on save button click
         $('#myModal').on('click','#cred_save',() => {
             Credentials.username = $('#cred_username').val();
-            Credentials.OAuth = $('#cred_oauth').val();
             Credentials.channel = $('#cred_channel').val();
 
             $(this).trigger('credential-update');
